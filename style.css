@@ -1,0 +1,164 @@
+body { 
+	margin : 10px; 
+	font-family : Verdana, Arial, Helvetica; 
+	font-size : 12px; 
+	color : #444444; 
+	background-color : #add8e6; 
+} 
+a { 
+	color : #000000; 
+	text-decoration : none; 
+} 
+#msg { 
+	margin : 0 0 20px 0; 
+	padding : 2px; 
+	border : 1px solid #cccccc; 
+	cursor : pointer; 
+	background : #cfcfcf; 
+} 
+#container { 
+	width : 860px; 
+	margin : 0 auto; 
+	background : #ffffff; 
+	height : auto; 
+	border : 1px solid #acacac; 
+	overflow : hidden; 
+} 
+#header { 
+	background-color : #3399cc; 
+	border : 1px solid #acacac; 
+	height : 20px; 
+	padding-left : 5px; 
+	margin : 5px; 
+	padding-top : 100px; 
+} 
+#top { 
+	background-color : #90ee90; 
+	border-top : 1px solid #acacac; 
+	border-bottom : 1px solid #acacac; 
+	height : 15px; 
+	padding : 10px 5px; 
+} 
+#innercontent { 
+	background : #ffffff; 
+	padding : 10px; 
+	height : auto; 
+} 
+#leftrow { 
+	float : left; 
+} 
+#centerrow { 
+	margin-left : 230px; 
+} 
+#left { 
+	padding : 5px; 
+	width : 160px; 
+} 
+#center { 
+	padding : 5px; 
+} 
+br.clear { 
+	display : block; 
+	height : 0; 
+	clear : both; 
+} 
+#profiel_geel { 
+	background : url(images/profiel/profiel_geel.png); 
+	width : 334px; 
+	height : 22px; 
+	padding-top : 10px; 
+	text-align : center; 
+	font-weight : bold; 
+	color : #ffffff; 
+	margin-top : 10px; 
+} 
+#profiel_bg { 
+	width : 318px; 
+	padding : 7px; 
+	border-left : 1px solid #b5b5af; 
+	border-right : 1px solid #b5b5af; 
+	overflow : hidden; 
+} 
+#profiel_bg.profiel_info { 
+	text-align : left; 
+} 
+#profiel_bg.profiel_info p { 
+	padding : 2px; 
+	margin : 0; 
+} 
+#profiel_bg.profiel_info label { 
+	float : left; 
+	width : 120px; 
+	font-weight : bold; 
+} 
+#profiel_bottom { 
+	background : url(images/profiel/profiel_bottom.png); 
+	width : 334px; 
+	height : 11px; 
+	margin-bottom : 15px; 
+} 
+#vak_titel_links { 
+	background : url(images/vak_titel_links.gif); 
+	width : 18px; 
+	height : 37px; 
+	float : left; 
+} 
+#vak_titel_rechts { 
+	background : url(images/vak_titel_rechts.gif); 
+	width : 15px; 
+	height : 37px; 
+	float : left; 
+} 
+#vak_titel { 
+	background : url(images/vak_titel.gif); 
+	height : 27px; 
+	width : 300px; 
+	text-align : center; 
+	padding-top : 10px; 
+	float : left; 
+} 
+#vak_onder_links { 
+	background : url(images/vak_onder_links.gif) no-repeat; 
+	width : 18px; 
+	height : 11px; 
+	float : left; 
+} 
+#vak_onder_rechts { 
+	background : url(images/vak_onder_rechts.gif) no-repeat; 
+	width : 15px; 
+	height : 11px; 
+	float : left; 
+} 
+#vak_onder { 
+	background : url(images/vak_onder.gif) repeat-x; 
+	height : 11px; 
+	float : left; 
+	width : 300px; 
+} 
+#vak_bg { 
+	background : url(images/vak_bg.gif); 
+	float : left; 
+	width : 333px; 
+} 
+table.data { 
+	width : 100%; 
+	font-family : Verdana, Arial, Helvetica; 
+	font-size : 12px; 
+	border : 1px solid #444444; 
+} 
+table.data th { 
+	background : #444444; 
+	text-align : left; 
+	color : #ffffff; 
+	padding : 1px; 
+	height : 20px; 
+} 
+table.data td { 
+	padding : 2px; 
+} 
+table.data tr:hover, table.data tr.row1:hover { 
+	background : #d5ecf5; 
+} 
+table.data tr.row1 { 
+	background : #f0f0f0; 
+}
