@@ -1,0 +1,68 @@
+<br />
+<strong>Hoofd Menu</strong><br />
+	&raquo; <a href="?p=nieuws">Nieuws</a><br />
+	<?php
+
+######## Menu.php ##########
+
+## Hier kan je de <a href="?p=PAGINA"> Menu titel </a>  aanpassen
+
+
+// Hieronder komen de links van het CMS systeem, Dus de pagina's die je aanmaakt via het admin panel //
+
+$sql = mysql_query("SELECT * FROM content ORDER BY volgordeid");
+while($row = mysql_fetch_assoc($sql)) {
+	?>
+	&raquo; <a href="?p=pagina&pid=<?php echo $row['paginaid']; ?>"><?php echo $row['titel']; ?></a><br />
+	<?php
+}
+
+// Hieronder zie je het leden systeem menu
+?><br />
+<strong>Leden Systeem</strong><br />
+
+<?php
+
+if(!isset($_SESSION['id'])) {    // Dit betekent, Als de gebruiker niet is ingelogd. ?>
+
+	&raquo; <a href="?p=registreren">Registeren</a><br />
+	&raquo; <a href="?p=login">Inloggen</a><br />
+	&raquo; <a href="?p=wwvergeten">Wachtwoord Vergeten</a><br />
+
+<?php }else{ // Dit betekent, Als de gebruiker WEL is ingelogd. ?><br />
+	&raquo; <a href="?p=wwveranderen">Wachtwoord Veranderen</a><br />
+	&raquo; <a href="?p=ledenlijst">Ledenlijst</a><br />
+	&raquo; <a href="?p=statistieken">Statistieken</a><br />
+	&raquo; <a href="?p=gastenboek">Gastenboek</a><br />
+	&raquo; <a href="?p=shop&a=shop">Shop</a><br />
+	&raquo; <a href="?p=kluis">Kraak de kluis</a><br />
+	&raquo; <a href="?p=askamod">Ask a mod</a><br />
+	&raquo; <a href="?p=vriend_bekijken">Vrienden</a><br />
+	&raquo; <a href="?p=gegevensveranderen">Gegevens Veranderen</a><br />
+	&raquo; <a href="?p=forum">Forum</a><br />
+	&raquo; <a href="?p=poll">Poll</a><br />
+	&raquo; <a href="?p=faq">F.A.Q.</a><br />
+	&raquo; <a href="?p=bericht">Berichten</a><br />
+	&raquo; <a href="?p=profiel">Profiel</a><br />
+	&raquo; <a href="?p=uitloggen">Uitloggen</a><br /><br />
+<?php } if(isset($_SESSION['admin'])) { // Dit betekent, Als je als admin bent ingelogd. ?>
+	<strong>Admin Panel</strong><br />
+	&raquo; <a href="?p=admin_gebruikers">Leden Beheren</a><br />
+	&raquo; <a href="?p=admin&a=instellingen">Instellingen Veranderen</a><br />
+	&raquo; <a href="?p=admin_gebruikers">Leden Verbannen</a><br />
+	&raquo; <a href="?p=admin_faq">F.A.Q. Beheren</a><br />
+	&raquo; <a href="?p=admin_askamod">Ask a mod beheren</a><br />
+	&raquo; <a href="?p=admin_berichtenbalk">Berichtenbalk Beheren</a><br />
+	&raquo; <a href="?p=admin_muntjes">Muntjes geven</a><br />
+	&raquo; <a href="?p=admin_alert">Waarschuwingen Geven</a><br />
+	&raquo; <a href="?p=admin_geven">Badges/Rangen Geven</a><br />
+	&raquo; <a href="?p=admin_nieuws">Nieuws Toevoegen / Beheren</a><br />
+	&raquo; <a href="?p=ipban">IP's bannen</a><br />
+	&raquo; <a href="?p=admin_shop">Shop items</a><br />
+	&raquo; <a href="?p=admin_forum">Forum Beheren</a><br />
+	&raquo; <a href="?p=admin_cms">Pagina's Beheren</a><br />
+<?php }elseif(isset($_SESSION['nieuwsreporter'])) { // Dit zie je als je nieuws reporter bent , level 2 ?>
+		&raquo; <a href="?p=admin_nieuws">Nieuws Toevoegen / Beheren</a><br />
+<?php }elseif(isset($_SESSION['forumbeheerder'])) { // Dit zie je als je forum beheerder bent , level 3 ?>
+	&raquo; <a href="?p=admin_forum">Forum Beheren</a><br />
+<?php } ?>

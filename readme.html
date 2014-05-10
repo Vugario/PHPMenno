@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Leden Systeem V2.1 Menno Handleiding</title>
+<style type="text/css">
+body {
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="top" style="background:url(http://images.habbohotel.nl/c_images/hotelviews/web_view_bg_de.gif); height:154px; width:928px;">
+<span style="color:#FFFFFF;font-size:30px">&nbsp;&nbsp;<strong>V2.3 Profielen Systeem</strong></span></div>
+<br />
+<br />
+<strong>Handleiding V2.3 Profielen Systeem - Made by Menno Wolvers</strong><br />
+Gescript voor Habbers Forum - <a href="http://www.habbers.nl/" target="_blank">Habbers.n</a>l en gescript door <a href="http://www.websiteready.nl/">Websiteready.nl</a> <br />
+<br />
+<a href="#inbouwen">Het inbouwen</a><br />
+<a href="#menu">Menu Inbouwen</a><br />
+<a href="#installeren">Systeem Installeren</a><br />
+<br />
+<div style="border: 1px solid #990000;" id="problemen">
+<h2>Problemen</h2>
+
+Heb je een probleem met grote lettertype's?<br />
+Dan komt het door CSS<br />
+Open je index.php en plak nèt boven &lt;/head&gt; deze code:<br />
+<br />
+<div style="border:1px solid #000000;">&lt;style type=&quot;text/css&quot;&gt;<br />
+table,tr,td,th {<br />
+&nbsp;&nbsp;&nbsp;font-size: 11px;<br />
+}<br />
+&lt;/style&gt;<br />
+</div>
+</div>
+<br />
+<br />
+<div style="border: 1px solid #990000;" id="inbouwen">
+	<h2>Inbouwen</h2>
+	Het inbouwen van dit systeem is eigenlijk heel makkelijk.<br />
+	Je hebt uiteraard al een eigen index.html of index.php.<br />
+	Anders kan je gewoon kladblok openen en precies doen wat ik nu zeg :<br /><br />
+	-Plak deze code helemaal bovenaan je index.php<br />
+	<div style="border:1px solid #000000;">&lt;?php<br />
+			/// Start van installatie check ///<br />
+			if(!isset($var) &amp;&amp; file_get_contents(&quot;config.php&quot;) == &quot;&quot;) {<br />
+include('pagina/maakconfig.php');<br />
+die();<br />
+}else{<br />
+require_once('class/head.class.php');<br />
+}<br />
+/// Einde van installatie check ///<br />
+?&gt;</div>
+	<br />
+	-Op de plek waar je je menu wilt hebben.<br />
+	Plak dit script:<br />
+	<div style="border:1px solid #000000;">
+      &lt;?php<br />
+        include('menu.php');<br />
+      ?&gt;
+	</div>
+	<br />
+    <br />
+-Op de plek waar je je algemene tekst wilt hebben. Dus alle tekst van elke pagina.<br />
+Plak dit script:<br />
+<div style="border:1px solid #000000;"> &lt;?php<br />
+  include('pagina.php');<br />
+  ?&gt; </div>
+<br />
+<br />
+<br />
+-Op de plek waar je je berichten balk wilt hebben.<br />
+Plak dit script:<br />
+<div style="border:1px solid #000000;"> &lt;?php<br />
+  include('pagina/balk.php');<br />
+  ?&gt; </div>
+<br />
+<br />
+<br />
+-Op de plek waar je je Laatste 5 Geregistreerde gebruikers wilt hebben<br />
+Plak dit script:<br />
+<div style="border:1px solid #000000;"> &lt;?php<br />
+  include('statistieken/laatste_5.php');<br />
+  ?&gt; </div>
+<br />
+<br />
+<br />
+-Op de plek waar je je Top 5 rijkste leden wilt hebben<br />
+Plak dit script:<br />
+<div style="border:1px solid #000000;"> &lt;?php<br />
+  include('statistieken/top_10_muntjes.php');<br />
+  ?&gt; </div>
+<br />
+<br />
+<br />
+-Op de plek waar je je nieuws headlines wilt hebben<br />
+Plak dit script:<br />
+<div style="border:1px solid #000000;"> &lt;?php<br />
+  include('statistieken/nieuwsheadlines.php');<br />
+  ?&gt; </div>
+<br />
+<br />
+<br />
+-Op de plek waar je je Top 5 gebruikers wilt hebben.<br />
+Plak dit script:<br />
+<div style="border:1px solid #000000;"> &lt;?php<br />
+		include('statistieken/top_5.php');<br />
+  ?&gt; </div>
+<br />
+<br />
+<br />
+-Op de plek waar je je aantal geregistreerde gebruikers wilt hebben.<br />
+Plak dit script:<br />
+<div style="border:1px solid #000000;"> &lt;?php<br />
+		include('statistieken/aantal_leden.php');<br />
+  ?&gt; </div>
+<br />
+<br />
+<br />
+-Op de plek waar je 5 willekeurig gekozen gebruikers wilt hebben.<br />
+Plak dit script:<br />
+<div style="border:1px solid #000000;"> &lt;?php<br />
+		include('statistieken/random_5.php');<br />
+  ?&gt; </div>
+<br />
+<br />
+<br />
+-Op de plek waar je de laatste nieuwsberichten wilt hebben.<br />
+Plak dit script:<br />
+<div style="border:1px solid #000000;"> &lt;?php<br />
+		include('statistieken/laatste_nieuws.php');<br />
+  ?&gt; </div>
+<br />
+<br />
+<br />
+-Op de plek waar je het aantal online gasten en leden wilt hebben.<br />
+Plak dit script:<br />
+<div style="border:1px solid #000000;"> &lt;?php<br />
+		include('statistieken/online.php');<br />
+  ?&gt; </div>
+<br />
+<br />
+<br />
+	<br />
+	<br />
+	Aangezien je natuurlijk het menu zelf wilt inrichten kan je het bestand in de map genaamd menu.php geheel naar eigen zin aanpassen.<br />
+	Daarvoor is een andere readme beschikbaar.<br />
+	Scroll naar boven en klik op Menu Inbouwen.<br />
+	<br />
+	Dit was het inbouwen.<br />
+	<br />
+	<a href="#top">Naar Boven</a>
+</div>
+<br />
+<br />
+<div style="border: 1px solid #990000;" id="menu">
+	<h2>Menu Inbouwen</h2>
+	Open menu.php in de algemene map<br />
+	Je ziet de wel bekende <a href="#">link</a> codes staan.<br />
+	Maar ook een paar onbekende codes die ik nu even met jullie bespreek.<br />
+	Hier vind je de hele menu.php code uitgelegd :<br />
+	<div style="border:1px solid #000000;">
+	&lt;?php if(!isset($_SESSION['id'])) { ?&gt;<br />
+	<br />	
+	Zet hier je normale html linken<br />
+	<br />
+	&lt;?php }else{ ?&gt;<br />
+	<br />
+	Zet hier je normale html linken die je ziet als je WEL Bent ingelogd<br />
+	<br />
+	&lt;?php if(isset($_SESSION['admin'])) { ?&gt;<br />
+	<br />
+	Zet hier de link naar het admin paneel.<br />
+	<br />
+	&lt;?php } ?&gt;<br />
+	<br />
+	Hier kan je meer linken zetten die je ziet als je WEL bent ingelogd<br />
+	<br />
+	&lt;?php } ?&gt;<br />
+	<br />
+	Hier kan je linken zetten die je altijd ziet, maakt niet uit of je wel of niet bent ingelogd.  <br />
+	</div>
+	<br />
+	Dit was het inbouwen van het menu<br />	
+	<a href="#top">Naar Boven</a>
+</div>
+<br />
+<br />
+<div style="border: 1px solid #990000;" id="installeren">
+	<h2>Systeem Installeren</h2>
+	<p>Het installeren is heel simpel,<br />
+	Zodra je alle bestanden hebt geupload kan je gewoon index.php laden en de installatie komt vanzelf te voorschijn.
+	  <br />
+	Vul hier dus je MySQL gegevens in die je van je host heb gekregen:<br />
+	-Gebruikersnaam<br />
+	-Wachtwoord<br />
+	-Databasenaam<br />
+	-Host (meestal localhost)<br />
+  </p>
+	<p>Zodra je de hele installatie hebt uitgevoerd zou je systeem perfect moeten werken. <br />
+	<br />
+	Als je systeem nu nog steeds niet werkt.<br />
+  Neem contact op met de developer van dit systeem.<br />
+      <a href="http://www.phpmenno.nl/" target="_blank">Klik hier voor contact</a><br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <a href="#top">Naar Boven</a>  </p>
+</div>
+
+
+
+
+
+
+<a href="http://www.phpmenno.nl/" target="_blank"><h3>Bij het ondervinden van problemen klik hier en neem contact op met de maker</h3></a>
+
+
+</body>
+</html>
