@@ -11,6 +11,7 @@ require_once("class/profiel.class.php");
 require_once("class/gastenboek.class.php");
 require_once("class/poll.class.php");
 require_once("class/shop.class.php");
+require_once("class/blogs.class.php");
 require_once("class/forum.class.php");
 require_once("class/nieuws.class.php");
 require_once("pagina/inlogcheck.php");
@@ -90,9 +91,76 @@ class profielen {
 				if($row['level'] == 3) {
 					$_SESSION['forumbeheerder'] = 1;
 				}
-				$_SESSION['id'] = $row['member_id'];
-				$_SESSION['gebruikersnaam'] = $row['gebruikersnaam'];
-				$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+				
+		$_SESSION['id'] = $row['member_id'];
+		$_SESSION['gebruikersnaam'] = $row['gebruikersnaam'];
+		$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+		/// RENTE ////
+		$dag = date("Y-m-d");
+		mysql_query("INSERT INTO rente (member_id,dag) VALUES ('".$_SESSION['id']."',NOW())");
+		if(mysql_error() != "") {
+			echo "Je hebt vandaag al je rente gehad, je moet wachten tot morgen.<br />";
+		}else{
+			$sql_club = mysql_query("SELECT * FROM clublid WHERE member_id='".$_SESSION['id']."'");
+			$row_club = mysql_fetch_assoc($sql_club);
+			
+			if(mysql_num_rows($sql_club) == 1) {
+				$sql_bank = mysql_query("SELECT bank FROM leden WHERE member_id='".$_SESSION['id']."'");
+				$row_bank = mysql_fetch_assoc($sql_bank);
+				
+				$aantal = $row_bank['bank'];
+				$aantal = $aantal * 1.05;
+				$aantal = round($aantal);
+				mysql_query("UPDATE leden SET bank='".$aantal."' WHERE member_id='".$_SESSION['id']."'");
+				
+				echo "Je hebt 5% rente gekregen op je bank saldo, Er staan nu <strong>".$aantal."</strong> muntjes op je bank<br />";
+			}else{
+				$sql_bank = mysql_query("SELECT bank FROM leden WHERE member_id='".$_SESSION['id']."'");
+				$row_bank = mysql_fetch_assoc($sql_bank);
+				
+				$aantal = $row_bank['bank'];
+				$aantal = $aantal * 1.02;
+				$aantal = round($aantal);
+				mysql_query("UPDATE leden SET bank='".$aantal."' WHERE member_id='".$_SESSION['id']."'");
+				
+				echo "Je hebt 2% rente gekregen op je bank saldo, Er staan nu <strong>".$aantal."</strong> muntjes op je bank<br />";
+			}
+		}
+		//// EINDE RENTE /////
+		
+		//// BEGIN CLUBLID /////
+		$sql_c = mysql_query("SELECT * FROM clublid WHERE member_id='".$_SESSION['id']."'");
+		if(mysql_num_rows($sql_c) >= 1) {
+			$row_c = mysql_fetch_assoc($sql_c);
+			$sql_club = mysql_query("SELECT * FROM clublid WHERE datum < CURRENT_DATE - INTERVAL 30 DAY AND member_id='".$_SESSION['id']."'");
+			if(mysql_num_rows($sql_club) >= 1) {
+				mysql_query("DELETE FROM clublid WHERE member_id='".$_SESSION['id']."'");
+				mysql_query("UPDATE leden SET rang='Habbo' WHERE member_id='".$_SESSION['id']."'");
+				echo "<br /><strong>Let op</strong> Je lidmaatschap op de habboclub is verlopen<br />";
+			}
+		}
+		//// EINDE CLUBLID //////
+		
+		//// BEGIN MUNTJES PER DAG ////
+		$aantal = 200; // aantal muntjes dat erbij komt
+		$aantalclublid = 300; // aantal muntjes dat erbij komt als je clublid bent
+		
+			$dag = date("Y-m-d");
+			mysql_query("INSERT INTO muntjesperdag (member_id,dag) VALUES ('".$_SESSION['id']."',NOW())");
+			if(mysql_error() != "") {
+				echo "Je hebt vandaag al je muntjes gehad, je moet wachten tot morgen.";
+			}else{
+				$sql_club = mysql_query("SELECT * FROM clublid WHERE member_id='".$_SESSION['id']."'");
+				$row_club = mysql_fetch_assoc($sql_club);
+				if(mysql_num_rows($sql_club) == 1) {
+					mysql_query("UPDATE leden SET muntjes=muntjes+".$aantal." WHERE member_id='".$_SESSION['id']."'");
+					echo "Je hebt ".$aantalclublid." muntjes erbij gekregen.";
+				}else{
+					mysql_query("UPDATE leden SET muntjes=muntjes+".$aantalclublid." WHERE member_id='".$_SESSION['id']."'");
+					echo "Je hebt ".$aantalclublid." muntjes erbij gekregen.";
+				}
+			}
+		//// EINDE MUNTJES PER DAG ////
 				// HASH //
 				$sessdata = $_SESSION['id'];
 				
@@ -105,9 +173,9 @@ class profielen {
 					echo "Er is een fout in de sessies database, check je database";
 					die();
 				}
-				return "<strong>".$gebruikersnaam."</strong>, Je bent nu succesvol ingelogd.<br>
-				Moment gedult, je wrodt nu doorverwezen.
-				<meta http-equiv='refresh' content='1;URL=index.php?p=beveiligdepagina' />";
+				return "<br /><br /><strong>".$gebruikersnaam."</strong>, Je bent nu succesvol ingelogd.<br>
+				Moment gedult, je wordt doorverwezen.
+				<meta http-equiv='refresh' content='3;URL=index.php?p=beveiligdepagina' />";
 			}else{
 				echo "Je account is verbannen van deze website.<br />Je kan daarom niet inloggen.<br /><a href=\"javascript:history.go(-1)\">Ga terug</a>";
 			}
@@ -116,17 +184,17 @@ class profielen {
 	function wachtwoordAanpassen($wachtwoordoud,$wachtwoordnieuw)  {
 		$wachtwoordoud = mysql_real_escape_string(substr($wachtwoordoud,0,255));
 		$wachtwoordnieuw = mysql_real_escape_string(substr($wachtwoordnieuw,0,255));
-		$sql = mysql_query("SELECT wachtwoord FROM leden WHERE member_id='".$_SESSION['id']."'");
+		$sql = mysql_query("SELECT wachtwoord,email,geboortedatum FROM leden WHERE member_id='".$_SESSION['id']."'");
 		$row = mysql_fetch_assoc($sql);
-		if($row['wachtwoord'] == md5($wachtwoordoud)) {
-			mysql_query("UPDATE leden SET wachtwoord='".md5($wachtwoordnieuw)."' WHERE member_id='".$_SESSION['id']."'");
+		if($row['wachtwoord'] == md5($wachtwoordoud) || $row['email'] == $_POST['email'] || $row['geboortedatum'] == $_POST['geboortedatum']) {
+			mysql_query("UPDATE leden SET wachtwoord='".md5($wachtwoordnieuw)."' WHERE member_id='".$_SESSION['id']."' AND email='".$_POST['email']."' AND geboortedatum='".$_POST['geboortedatum']."'");
 			if(mysql_error() == "") {
 				return "Je wachtwoord is succesvol geupdate.<br />Je kunt nu verder gaan.<br /><a href='javascript:history.go(-1)'>Ga terug</a>";
 			}else{
 				return mysql_error();
 			}
 		}else{
-			return "Je oude wachtwoord is niet goed.<br /><a href='javascript:history.go(-1)'>Ga terug.</a>";
+			return "Een of meerdere gegevens zijn fout, probeer het opnieuw.<br /><a href='javascript:history.go(-1)'>Ga terug.</a>";
 		}
 	}
 	function rangAanpassen($rang_id) {
@@ -407,3 +475,16 @@ function faq(div)
         }
 }
 </script>
+
+<?php
+		$sql1 = mysql_query("SELECT member_id,gebruikersnaam,level,rang FROM leden WHERE gebruikersnaam='".$gebruikersnaam."' AND wachtwoord='".md5($wachtwoord)."'");
+		$row1 = mysql_fetch_assoc($sql1);
+		if($row1['rang'] == "verbannen") {
+			$sql = mysql_query("SELECT infractie FROM leden WHERE member_id='".$_SESSION['id']."'");
+			$row = mysql_fetch_assoc($sql);
+			if($row['infractie'] > 9) {
+				mysql_query("UPDATE leden SET rang='verbannen' WHERE member_id='".$_SESSION['id']."'");
+				echo '<meta http-equiv="refresh" content="0;URL=?p=uitloggen" />';
+			}
+		}
+			?>

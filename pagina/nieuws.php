@@ -14,7 +14,7 @@ while($row = mysql_fetch_assoc($sql)) {
 			<td><i>Gepost door : ".$row_member['gebruikersnaam']." op ".$row['datum']."</i></td>
 		</tr>
 		<tr>
-			<td>".stripslashes(htmlspecialchars($row['bericht']))."</td>
+			<td>".stripslashes($row['bericht'])."</td>
 		</tr>
 		<tr>
 			<td style='text-align: right;'><a href='?p=nieuws&nid=".$row['nieuws_id']."'>Lees meer</a> | <a href='?p=nieuws&nid=".$row['nieuws_id']."'>".$aantal_reacties." Reacties</a></td>

@@ -4,16 +4,14 @@ require_once('config.php');
 
 ?>
 <img src="images/installatie.gif" /><br>
+<h1>Update van V3 naar V4</h1>
 <br>
 <span style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px;">
 <?php
 
-if(isset($_POST['installeren']) && !empty($_POST['gebruikersnaam']) && !empty($_POST['wachtwoord'])) {
-	$gebruikersnaam = mysql_real_escape_string(substr($_POST['gebruikersnaam'],0,30));
-	$wachtwoord = mysql_real_escape_string(md5(substr($_POST['wachtwoord'],0,30)));
 	
 
-	mysql_query("CREATE TABLE `alert` (
+mysql_query("CREATE TABLE IF NOT EXISTS `alert` (
   `alert_id` int(11) NOT NULL auto_increment,
   `member_id` int(11) NOT NULL,
   `reden` text NOT NULL,
@@ -23,7 +21,7 @@ if(isset($_POST['installeren']) && !empty($_POST['gebruikersnaam']) && !empty($_
   PRIMARY KEY  (`alert_id`),
   UNIQUE KEY `datum` (`datum`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;");
-mysql_query("CREATE TABLE `askamod` (
+mysql_query("CREATE TABLE IF NOT EXISTS `askamod` (
   `askamod_id` int(30) NOT NULL auto_increment,
   `vraag` text NOT NULL,
   `member_id` int(30) NOT NULL,
@@ -31,8 +29,7 @@ mysql_query("CREATE TABLE `askamod` (
   `gelezen` enum('ja','nee') NOT NULL,
   PRIMARY KEY  (`askamod_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;");
-mysql_query("
-CREATE TABLE `berichten` (
+mysql_query("CREATE TABLE IF NOT EXISTS `berichten` (
   `bericht_id` int(30) NOT NULL auto_increment,
   `aan` varchar(255) NOT NULL,
   `door` varchar(255) NOT NULL,
@@ -43,22 +40,19 @@ CREATE TABLE `berichten` (
   PRIMARY KEY  (`bericht_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `berichten_balk` (
+mysql_query("CREATE TABLE IF NOT EXISTS `berichten_balk` (
   `bericht_id` int(30) NOT NULL auto_increment,
   `member_id` int(30) NOT NULL,
   `bericht` varchar(255) NOT NULL,
   PRIMARY KEY  (`bericht_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `berichten_balk_ip` (
+mysql_query("CREATE TABLE IF NOT EXISTS `berichten_balk_ip` (
   `ip` varchar(255) NOT NULL,
   `moment` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 ");
-mysql_query("
-CREATE TABLE `berichten_opgeslagen` (
+mysql_query("CREATE TABLE IF NOT EXISTS `berichten_opgeslagen` (
   `opgeslagen_id` int(30) NOT NULL auto_increment,
   `bericht_id` int(30) NOT NULL,
   `aan` varchar(255) NOT NULL,
@@ -70,8 +64,7 @@ CREATE TABLE `berichten_opgeslagen` (
   PRIMARY KEY  (`opgeslagen_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `berichten_verzonden` (
+mysql_query("CREATE TABLE IF NOT EXISTS `berichten_verzonden` (
   `bericht_id` int(30) NOT NULL auto_increment,
   `aan` varchar(255) NOT NULL,
   `door` varchar(255) NOT NULL,
@@ -82,17 +75,14 @@ CREATE TABLE `berichten_verzonden` (
   PRIMARY KEY  (`bericht_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-
-CREATE TABLE `bezonline` (
+mysql_query("CREATE TABLE IF NOT EXISTS `bezonline` (
   `id` int(11) NOT NULL auto_increment,
   `ip` varchar(50) NOT NULL default '',
   `tijd` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `content` (
+mysql_query("CREATE TABLE IF NOT EXISTS`content` (
   `paginaid` int(11) NOT NULL auto_increment,
   `volgordeid` int(11) NOT NULL default '0',
   `titel` varchar(255) NOT NULL default '',
@@ -101,8 +91,7 @@ CREATE TABLE `content` (
   PRIMARY KEY  (`paginaid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `faq` (
+mysql_query("CREATE TABLE IF NOT EXISTS `faq` (
   `faq_id` int(30) NOT NULL auto_increment,
   `vraag` varchar(45) NOT NULL,
   `antwoord` text NOT NULL,
@@ -110,8 +99,7 @@ CREATE TABLE `faq` (
   UNIQUE KEY `vraag` (`vraag`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `forum_berichten` (
+mysql_query("CREATE TABLE IF NOT EXISTS `forum_berichten` (
   `bericht_id` int(30) NOT NULL auto_increment,
   `titel` varchar(255) NOT NULL,
   `bericht` text NOT NULL,
@@ -122,16 +110,14 @@ CREATE TABLE `forum_berichten` (
   PRIMARY KEY  (`bericht_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `forum_categorie` (
+mysql_query("CREATE TABLE IF NOT EXISTS `forum_categorie` (
   `categorie_id` int(30) NOT NULL auto_increment,
   `titel` varchar(255) NOT NULL,
   `uitleg` varchar(255) NOT NULL,
   PRIMARY KEY  (`categorie_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `forum_reacties` (
+mysql_query("CREATE TABLE IF NOT EXISTS `forum_reacties` (
   `reactie_id` int(30) NOT NULL auto_increment,
   `member_id` int(30) NOT NULL,
   `bericht` text NOT NULL,
@@ -141,23 +127,20 @@ CREATE TABLE `forum_reacties` (
   PRIMARY KEY  (`reactie_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `forum_timeout` (
+mysql_query("CREATE TABLE IF NOT EXISTS `forum_timeout` (
   `ip` varchar(15) NOT NULL,
   `moment` varchar(20) NOT NULL,
   `member_id` int(30) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 ");
-mysql_query("
-CREATE TABLE `gastenboek` (
+mysql_query("CREATE TABLE IF NOT EXISTS `gastenboek` (
   `gastenboek_id` int(30) NOT NULL auto_increment,
   `member_id` int(30) NOT NULL,
   PRIMARY KEY  (`gastenboek_id`),
   UNIQUE KEY `member_id` (`member_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `gastenboek_berichten` (
+mysql_query("CREATE TABLE IF NOT EXISTS `gastenboek_berichten` (
   `bericht_id` int(30) NOT NULL auto_increment,
   `gastenboek_id` int(30) NOT NULL,
   `habbonaam` varchar(255) NOT NULL,
@@ -166,14 +149,12 @@ CREATE TABLE `gastenboek_berichten` (
   PRIMARY KEY  (`bericht_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `gastenboek_ip` (
+mysql_query("CREATE TABLE IF NOT EXISTS `gastenboek_ip` (
   `ip` varchar(255) NOT NULL,
   `moment` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ");
-mysql_query("
-CREATE TABLE `gekochte_badges` (
+mysql_query("CREATE TABLE IF NOT EXISTS `gekochte_badges` (
   `gekocht_id` int(30) NOT NULL auto_increment,
   `badge_id` int(30) NOT NULL,
   `member_id` int(30) NOT NULL,
@@ -181,8 +162,7 @@ CREATE TABLE `gekochte_badges` (
   UNIQUE KEY `badge_id` (`badge_id`,`member_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `gekochte_meubi` (
+mysql_query("CREATE TABLE IF NOT EXISTS `gekochte_meubi` (
   `gekocht_id` int(30) NOT NULL auto_increment,
   `meubi_id` int(30) NOT NULL,
   `member_id` int(30) NOT NULL,
@@ -190,8 +170,7 @@ CREATE TABLE `gekochte_meubi` (
   UNIQUE KEY `meubi_id` (`meubi_id`,`member_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `gekochte_rangen` (
+mysql_query("CREATE TABLE IF NOT EXISTS `gekochte_rangen` (
   `gekocht_id` int(30) NOT NULL auto_increment,
   `rang_id` int(30) NOT NULL,
   `member_id` int(30) NOT NULL,
@@ -199,8 +178,7 @@ CREATE TABLE `gekochte_rangen` (
   UNIQUE KEY `rang_id` (`member_id`,`rang_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `instellingen` (
+mysql_query("CREATE TABLE IF NOT EXISTS `instellingen` (
   `instellingen_id` int(1) NOT NULL auto_increment,
   `shop` enum('aan','uit') NOT NULL default 'aan',
   `berichten` enum('aan','uit') NOT NULL default 'aan',
@@ -214,16 +192,14 @@ CREATE TABLE `instellingen` (
   PRIMARY KEY  (`instellingen_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `ipban` (
+mysql_query("CREATE TABLE IF NOT EXISTS `ipban` (
   `ipban_id` int(30) NOT NULL auto_increment,
   `ip` varchar(15) NOT NULL,
   `reden` text NOT NULL,
   PRIMARY KEY  (`ipban_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE IF NOT EXISTS `leden` (
+mysql_query("CREATE TABLE IF NOT EXISTS `leden` (
   `member_id` int(30) NOT NULL auto_increment,
   `gebruikersnaam` varchar(255) NOT NULL,
   `wachtwoord` varchar(255) NOT NULL,
@@ -244,8 +220,9 @@ CREATE TABLE IF NOT EXISTS `leden` (
   UNIQUE KEY `gebruikersnaam_2` (`gebruikersnaam`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `nieuws_berichten` (
+mysql_query("ALTER TABLE `leden` ADD `bank` VARCHAR( 255 ) NULL DEFAULT '0' AFTER `lastonline` ;");
+mysql_query("ALTER TABLE `leden` ADD `lastonline` DATETIME NOT NULL AFTER `avatar` ;");
+mysql_query("CREATE TABLE IF NOT EXISTS `nieuws_berichten` (
   `nieuws_id` int(30) NOT NULL auto_increment,
   `titel` varchar(25) NOT NULL,
   `bericht` text NOT NULL,
@@ -256,8 +233,7 @@ CREATE TABLE `nieuws_berichten` (
   UNIQUE KEY `titel` (`titel`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `nieuws_reacties` (
+mysql_query("CREATE TABLE IF NOT EXISTS `nieuws_reacties` (
   `reactie_id` int(30) NOT NULL auto_increment,
   `member_id` int(30) NOT NULL,
   `bericht` text NOT NULL,
@@ -267,14 +243,12 @@ CREATE TABLE `nieuws_reacties` (
   PRIMARY KEY  (`reactie_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `nieuws_reacties_ip` (
+mysql_query("CREATE TABLE IF NOT EXISTS `nieuws_reacties_ip` (
   `ip` varchar(255) NOT NULL,
   `moment` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 ");
-mysql_query("
-CREATE TABLE `poll` (
+mysql_query("CREATE TABLE IF NOT EXISTS `poll` (
   `poll_id` int(30) NOT NULL auto_increment,
   `member_id` int(30) NOT NULL,
   `vraag` varchar(255) NOT NULL,
@@ -290,15 +264,13 @@ CREATE TABLE `poll` (
   UNIQUE KEY `member_id` (`member_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `poll_ip` (
+mysql_query("CREATE TABLE IF NOT EXISTS `poll_ip` (
   `ip` varchar(255) NOT NULL,
   `poll_id` int(30) NOT NULL,
   UNIQUE KEY `ip` (`ip`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ");
-mysql_query("
-CREATE TABLE `profiel` (
+mysql_query("CREATE TABLE IF NOT EXISTS `profiel` (
   `profiel_id` int(30) NOT NULL auto_increment,
   `member_id` int(30) NOT NULL,
   `naam` varchar(255) default NULL,
@@ -314,8 +286,7 @@ CREATE TABLE `profiel` (
   UNIQUE KEY `member_id` (`member_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `shop_badges` (
+mysql_query("CREATE TABLE IF NOT EXISTS `shop_badges` (
   `badge_id` int(30) NOT NULL auto_increment,
   `titel` varchar(255) NOT NULL,
   `beschrijving` varchar(255) NOT NULL,
@@ -326,8 +297,7 @@ CREATE TABLE `shop_badges` (
   PRIMARY KEY  (`badge_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `shop_meubi` (
+mysql_query("CREATE TABLE IF NOT EXISTS `shop_meubi` (
   `meubi_id` int(30) NOT NULL auto_increment,
   `titel` varchar(255) NOT NULL,
   `beschrijving` varchar(255) NOT NULL,
@@ -338,8 +308,7 @@ CREATE TABLE `shop_meubi` (
   PRIMARY KEY  (`meubi_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `shop_rangen` (
+mysql_query("CREATE TABLE IF NOT EXISTS `shop_rangen` (
   `rang_id` int(30) NOT NULL auto_increment,
   `titel` varchar(255) NOT NULL,
   `prijs` int(30) NOT NULL,
@@ -348,41 +317,34 @@ CREATE TABLE `shop_rangen` (
   PRIMARY KEY  (`rang_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `speciale_badges` (
+mysql_query("CREATE TABLE IF NOT EXISTS `speciale_badges` (
   `badge_id` int(30) NOT NULL auto_increment,
   `titel` varchar(25) NOT NULL,
   `plaatje` text NOT NULL,
   PRIMARY KEY  (`badge_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE `speciale_badges_members` (
+mysql_query("CREATE TABLE IF NOT EXISTS `speciale_badges_members` (
   `speciale_id` int(30) NOT NULL auto_increment,
   `member_id` int(30) NOT NULL,
   `badge_id` int(30) NOT NULL,
   PRIMARY KEY  (`speciale_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ");
-mysql_query("
-CREATE TABLE IF NOT EXISTS `stemmen_ip` (
+mysql_query("CREATE TABLE IF NOT EXISTS `stemmen_ip` (
   `ip` varchar(255) NOT NULL,
   `moment` varchar(255) NOT NULL,
   `member_id` int(30) NOT NULL,
   UNIQUE KEY `ip` (`ip`,`member_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 ");
-mysql_query("
-CREATE TABLE `vrienden` (
+mysql_query("CREATE TABLE IF NOT EXISTS `vrienden` (
   `member_id` int(30) NOT NULL,
   `vriend_id` int(30) NOT NULL,
   `actief` enum('actief','dood') NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 ") or die(mysql_error());
-	mysql_query("INSERT INTO `instellingen` (`instellingen_id`, `shop`, `berichten`, `stemmen`, `poll`, `gastenboek`, `status`, `avatar_habbo`, `habbo_gegevens`, `meubi`) VALUES 
-(1, 'aan', 'aan', 'aan', 'aan', 'aan', 'aan', 'habbo', 'aan', 'aan');
-") or die(mysql_error());
-	mysql_query("CREATE TABLE `sessies` (
+	mysql_query("CREATE TABLE IF NOT EXISTS `sessies` (
   `sessie_id` int(30) NOT NULL auto_increment,
   `ip` varchar(20) NOT NULL,
   `hash` varchar(50) NOT NULL,
@@ -400,11 +362,6 @@ CREATE TABLE `vrienden` (
   `poll_id` int(30) NOT NULL,
   UNIQUE KEY `ip` (`ip`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;") or die(mysql_error());
-	mysql_query("INSERT INTO `poll_ant` (`id`, `antwoord`) VALUES
-(1, 'Leuk'),
-(2, 'Lelijk'),
-(3, 'Gaat wel'),
-(4, 'Afschuwelijk lelijk');") or die(mysql_error());
 	mysql_query("CREATE TABLE IF NOT EXISTS `overschrijvingen` (
   `overschrijf_id` int(30) NOT NULL auto_increment,
   `muntjes` int(30) NOT NULL,
@@ -414,14 +371,14 @@ CREATE TABLE `vrienden` (
   `bericht` varchar(255) NOT NULL,
   PRIMARY KEY  (`overschrijf_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;") or die(mysql_error());
-	mysql_query(" CREATE TABLE `tijd_bannen` (
+	mysql_query("CREATE TABLE IF NOT EXISTS `tijd_bannen` (
 `tijd_id` INT( 30 ) NOT NULL AUTO_INCREMENT ,
 `member_id` INT( 30 ) NOT NULL ,
 `tijd` VARCHAR( 255 ) NOT NULL ,
 `reden` VARCHAR( 255 ) NOT NULL ,
 PRIMARY KEY ( `tijd_id` )
 ) ENGINE = MYISAM ") or die(mysql_error());
-	mysql_query("CREATE TABLE `blogs_berichten` (
+	mysql_query("CREATE TABLE IF NOT EXISTS `blogs_berichten` (
   `blogs_id` int(30) NOT NULL auto_increment,
   `titel` varchar(75) NOT NULL,
   `bericht` text NOT NULL,
@@ -430,7 +387,7 @@ PRIMARY KEY ( `tijd_id` )
   `member_id` int(30) NOT NULL,
   PRIMARY KEY  (`blogs_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;") or die(mysql_error());
-	mysql_query("CREATE TABLE `blogs_reacties` (
+	mysql_query("CREATE TABLE IF NOT EXISTS `blogs_reacties` (
   `reactie_id` int(30) NOT NULL auto_increment,
   `member_id` int(30) NOT NULL,
   `bericht` text NOT NULL,
@@ -439,7 +396,7 @@ PRIMARY KEY ( `tijd_id` )
   `blogs_id` int(30) NOT NULL,
   PRIMARY KEY  (`reactie_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;") or die(mysql_error());
-	mysql_query("CREATE TABLE `blogs_reacties_ip` (
+	mysql_query("CREATE TABLE IF NOT EXISTS `blogs_reacties_ip` (
   `ip` varchar(255) NOT NULL,
   `moment` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;") or die(mysql_error());
@@ -456,6 +413,7 @@ PRIMARY KEY ( `tijd_id` )
   `datum` date NOT NULL,
   PRIMARY KEY  (`clublid_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;") or die(mysql_error());
+
 	mysql_query("CREATE TABLE IF NOT EXISTS `rente` (
   `id` int(30) NOT NULL auto_increment,
   `member_id` int(30) NOT NULL,
@@ -463,7 +421,7 @@ PRIMARY KEY ( `tijd_id` )
   PRIMARY KEY  (`id`),
   UNIQUE KEY `member_id` (`member_id`,`dag`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;") or die(mysql_error());
-	mysql_query("CREATE TABLE `waarschuwingen` (
+	mysql_query("CREATE TABLE IF NOT EXISTS `waarschuwingen` (
   `id` int(11) NOT NULL auto_increment,
   `member_id` int(11) NOT NULL,
   `reden` text NOT NULL,
@@ -472,7 +430,7 @@ PRIMARY KEY ( `tijd_id` )
   PRIMARY KEY  (`id`),
   UNIQUE KEY `datum` (`datum`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;") or die(mysql_error());
-	mysql_query("CREATE TABLE `infracties` (
+	mysql_query("CREATE TABLE IF NOT EXISTS `infracties` (
   `id` int(11) NOT NULL auto_increment,
   `member_id` int(11) NOT NULL,
   `reden` text NOT NULL,
@@ -493,25 +451,13 @@ PRIMARY KEY ( `tijd_id` )
 	//mysql_query("") or die(mysql_error());
 	//mysql_query("") or die(mysql_error());
 	//mysql_query("") or die(mysql_error());
-	
-	mysql_query("INSERT INTO `leden` (`member_id`, `gebruikersnaam`, `wachtwoord`, `geboortedatum`, `email`, `level`, `regdatum`, `ip`, `punten`, `muntjes`, `rang`, `avatar`,`lastonline`,`infractie`,`bank`) VALUES 
-(1, '".$gebruikersnaam."', '".$wachtwoord."', '18-9-1991', 'test@email.com', 6, '2007-08-29 22:28:53', '127.0.0.1', 0, 1000, 'Habbo', 'http://img516.imageshack.us/img516/5683/b0705xs43174s28094s0517st4.gif',NOW(),'0','0');");
+	//mysql_query("") or die(mysql_error());
 	
 	if(mysql_error() == "") {
 		echo "Je systeem is succesvol geinstalleerd.<br />
-		<h2>Verwijder nu install.php</h2><a href=\"index.php\">Ga verder</a>";
+		<h2>Verwijder nu update.php en install.php</h2><a href=\"index.php\">Ga verder</a>";
 	}else{
 		echo "Er zijn fouten aangetroffen.<br /><a href=\"javascript:history.go(-1)\">Ga terug</a>";
 	}
-}else{
-	?>
-	<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
-		Registreer hier je admin account waarmee je zometeen wilt inloggen.<br>
-		Gebruikersnaam:<br><input type="text" name="gebruikersnaam" /><br />
-		Wachtwoord:<br><input type="password" name="wachtwoord" /><br />
-		<br />
-		<input type="submit" name="installeren" value="Installeren" /><br />
-	</form>
-	<?php
-}
-?></span>
+?>
+</span>

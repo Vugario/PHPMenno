@@ -124,7 +124,9 @@ class shop {
 			$sql_leden = mysql_query("SELECT muntjes FROM leden WHERE member_id='".$_SESSION['id']."'");
 			$row_leden = mysql_fetch_assoc($sql_leden);
 			$sql_check = mysql_query("SELECT * FROM gekochte_badges WHERE badge_id='".$item_id."' AND member_id='".$_SESSION['id']."'");
-			if(mysql_num_rows($sql_check) == 1) {
+									if($row['actief'] == "uit") {
+				echo "Dit item staat niet (meer) in de shop, je kan het dus niet kopen.<br />";
+			}elseif(mysql_num_rows($sql_check) == 1) {
 				echo "Je hebt deze badge al gekocht.<br /><a href='javascript:history.go(-1)'>Ga terug</a>";
 			}elseif($row_leden['muntjes'] - $row['prijs'] < 0) {
 				return "Je hebt niet genoeg muntjes om dit item te kopen.<br><a href='javascript:history.go(-1)'>Ga terug</a>";
@@ -136,15 +138,17 @@ class shop {
 					Je kan deze <a href='?p=profiel&mid=".$_SESSION['id']."'>Hier</a> bekijken.";
 				}else{
 					return mysql_error();
+					}
 				}
-			}
 		}elseif($soort == "rang") {
 			$sql = mysql_query("SELECT * FROM shop_rangen WHERE rang_id = '".$item_id."'");
 			$row = mysql_fetch_assoc($sql);
 			$sql_leden = mysql_query("SELECT muntjes FROM leden WHERE member_id='".$_SESSION['id']."'");
 			$row_leden = mysql_fetch_assoc($sql_leden);
 			$sql_check = mysql_query("SELECT * FROM gekochte_rangen WHERE rang_id='".$item_id."' AND member_id='".$_SESSION['id']."'");
-			if(mysql_num_rows($sql_check) == 1) {
+						if($row['actief'] == "uit") {
+				echo "Dit item staat niet (meer) in de shop, je kan het dus niet kopen.<br />";
+			}elseif(mysql_num_rows($sql_check) == 1) {
 				echo "Je hebt deze rang al gekocht.<br /><a href='javascript:history.go(-1)'>Ga terug</a>";
 			}elseif($row_leden['muntjes'] - $row['prijs'] < 0) {
 				return "Je hebt niet genoeg muntjes om dit item te kopen.";
@@ -156,15 +160,15 @@ class shop {
 					<a href='javascript:history.go(-1)'>Ga terug</a>.";
 				}else{
 					return mysql_error();
+					}
 				}
-			}
 		}elseif($soort == "meubi") {
 			$sql = mysql_query("SELECT * FROM shop_meubi WHERE meubi_id = '".$item_id."'");
 			$row = mysql_fetch_assoc($sql);
 			if($row['actief'] == "uit") {
-				echo "Dit item is uit, Je kan het dus niet kopen.<br />";
+				echo "Dit item staat niet (meer) in de shop, je kan het dus niet kopen.<br />";
 			}elseif(mysql_num_rows($sql) == 0) {
-				echo "Dit item bestaat helemaal niet, Je kan dit dus niet kopen.<br />";
+				echo "Dit item bestaat helemaal niet, je kan dit dus niet kopen.<br />";
 			}else{
 				$sql_leden = mysql_query("SELECT muntjes FROM leden WHERE member_id='".$_SESSION['id']."'");
 				$row_leden = mysql_fetch_assoc($sql_leden);

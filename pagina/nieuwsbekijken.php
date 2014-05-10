@@ -57,7 +57,7 @@ if(isset($_GET['nid']) && !empty($_GET['nid']) && is_numeric($_GET['nid'])) {
 				<td><i>Gepost door <strong><?php echo $row_member['gebruikersnaam']; ?></strong> op <strong><?php echo $row['datum']; ?></strong></i><br><hr></td>
 			</tr>
 			<tr>
-				<td><?php echo stripslashes(htmlspecialchars($row['bericht'])); ?></td>
+				<td><?php echo stripslashes($row['bericht']); ?></td>
 			</tr>
 		</table>
 		<hr>

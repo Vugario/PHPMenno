@@ -1,5 +1,62 @@
 <?php
 if(isset($_SESSION['id'])) {
+	?>
+	<style type="text/css">
+	#vak_titel_links {
+		background:url(images/vak_titel_links.gif);
+		width: 18px;
+		height: 37px;
+		float:left;
+	}
+	
+	#vak_titel_rechts {
+		background:url(images/vak_titel_rechts.gif);
+		width: 15px;
+		height: 37px;
+		float:left;
+	}
+	
+	#vak_titel {
+		background:url(images/vak_titel.gif);
+		height: 27px;
+		width: 300px;
+		text-align: center;
+		padding-top: 10px;
+		float:left;
+	}
+	
+	#vak_onder_links {
+		background:url(images/vak_onder_links.gif) no-repeat;
+		width: 18px;
+		height: 11px;
+		float:left;
+	}
+	
+	#vak_onder_rechts {
+		background:url(images/vak_onder_rechts.gif) no-repeat;
+		width: 15px;
+		height: 11px;
+		float:left;
+	}
+	
+	#vak_onder {
+		background:url(images/vak_onder.gif) repeat-x;
+		height: 11px;
+		float:left;
+		width: 300px;
+	}
+	
+	#vak_bg {
+		background:url(images/vak_bg.gif);
+		float:left;
+		width: 333px;
+	}
+	
+	#container {
+		width: 333px;
+	}
+	</style>
+	<?php
 	$sql = mysql_query("SELECT member_id FROM profiel WHERE member_id='".$_SESSION['id']."'");
 	
 	echo "<center>";
@@ -203,7 +260,10 @@ if(isset($_SESSION['id'])) {
 					}else{
 						return mysql_error();
 					}
-				}else{
+				}elseif($_POST['rang_id'] == "clublid"){
+		mysql_query("UPDATE leden SET rang='Club Lid' WHERE member_id='".$_SESSION['id']."'");
+				echo "Je rang is succesvol aangepast.<br /><a href='javascript:history.go(-1)'>Ga terug</a>";
+		}else{
 					echo $doe->rangAanpassen($_POST['rang_id']);
 				}
 			}else{
@@ -225,6 +285,10 @@ if(isset($_SESSION['id'])) {
 								?>
 								<option value="<?php echo $row['rang_id']; ?>"><?php echo $row_rang['titel']; ?></option>
 								<?php
+							}
+							$sql_clublid = mysql_query("SELECT * FROM clublid WHERE member_id='".$_SESSION['id']."'");
+							if(mysql_num_rows($sql_clublid) == 1) {
+							echo "<option value=\"clublid\">Club Lid</option>";
 							}
 							?>
 						</select><br />
@@ -278,6 +342,12 @@ if(isset($_SESSION['id'])) {
 				$row = mysql_fetch_assoc($sql);
 				$row_leden = mysql_fetch_assoc($sql_leden);
 				?>
+				<div id="container">
+					<div id="vak_titel_links"></div>
+					<div id="vak_titel"><strong><?php echo $row_leden['gebruikersnaam']; ?></strong></div>
+					<div id="vak_titel_rechts"></div>
+					
+					<div id="vak_bg">
 				<table>
 					<?php if($row['naam'] != "") { ?>
 					<tr>
@@ -332,10 +402,32 @@ if(isset($_SESSION['id'])) {
 						<td><?php echo htmlspecialchars($row_leden['rang']); ?></td>
 					</tr>
 					<tr>
+						<td><strong>Online</strong></td>
+						<td>
+							<?php
+							$sql = "SELECT member_id FROM leden WHERE DATE_SUB(NOW(),INTERVAL 5 MINUTE) <= lastonline AND member_id='".$mid."'";
+							$query = mysql_query($sql);
+							$tellen = mysql_num_rows($query);
+							if($tellen == 1) {
+								echo "<font color='darkgreen'>Online</font>";
+							}else{
+								echo "<font color='darkred'>Offline</font>";
+							}
+							?>
+						</td>
+					</tr>
+					<tr>
 						<td><strong>Vrienden</strong></td>
 						<td><a href="?p=vriend_toevoegen&vid=<?php echo $_GET['mid'] ?>">Verzoek Sturen</a></td>
 					</tr>
-				</table><br><br>
+				</table>
+						</div>
+					
+					<div id="vak_onder_links"></div>
+					<div id="vak_onder"></div>
+					<div id="vak_onder_rechts"></div>
+				</div>
+				<br>
 	<br />
 	
 				<?php
@@ -348,7 +440,13 @@ if(isset($_SESSION['id'])) {
 				$habbo = new habboClass($row_leden['gebruikersnaam'],$land);
 				
 				if($habbo->normal() == true) {
-					?>
+					?><br /><br />
+					<div id="container">
+						<div id="vak_titel_links"></div>
+						<div id="vak_titel"><strong>Habbo Informatie</strong></div>
+						<div id="vak_titel_rechts"></div>
+						
+						<div id="vak_bg">
 					<table width="300">
 						<tr>
 							<td width="180"><strong>Habbo Online</strong></td>
@@ -356,7 +454,8 @@ if(isset($_SESSION['id'])) {
 						</tr>
 						<tr>
 							<td width="180"><strong>Habbo Missie</strong></td>
-							<td width="240"><?php if(strlen($habbo->motto()) != "") { echo htmlspecialchars($habbo->motto()); } ?></td>
+							<td width="240"><?php if(strlen($habbo->motto()) != "") { echo str_replace('
+<div class="clear">',' ',$habbo->motto()); } ?></td>
 						</tr>
 						<tr>
 							<td width="180"><strong>Habbo Sinds</strong></td>
@@ -369,11 +468,11 @@ if(isset($_SESSION['id'])) {
 							$habbo_badge = $habbo->badge();
 							if(!empty($habbo_badge)) { echo "<img src=\"".$habbo->badge()."\" alt=\"Habbo Badge\" />"; } ?></td>
 						</tr>
-					</table><br />
+					</table>
 					<?php } if($instellingen['avatar_habbo'] == "habbo") { ?>
 						<img alt="Habbo" src="http://www.habbo.<?php echo $land; ?>/habbo-imaging/avatarimage?user=<?php echo htmlspecialchars($row_leden['gebruikersnaam']); ?>&action=none&direction=2&head_direction=2&gesture=smile&size=l" />
 					<?php } if($instellingen['avatar_habbo'] == "avatar") {
-						$sql = mysql_query("SELECT avatar FROM leden WHERE member_id='".$_SESSION['id']."'");
+						$sql = mysql_query("SELECT avatar FROM leden WHERE member_id='".$mid."'");
 						$row = mysql_fetch_assoc($sql);
 						if($row['avatar'] != "") {
 							?>
@@ -385,12 +484,24 @@ if(isset($_SESSION['id'])) {
 							<?php
 						}
 					}
-					?>
+					?><br />
+							</div>
+						
+						<div id="vak_onder_links"></div>
+						<div id="vak_onder"></div>
+						<div id="vak_onder_rechts"></div>
+					</div>
 	<br />
 					<?php
 					if($instellingen['stemmen'] == "aan") {
 						/////// STEMMEN GEDEELTE /////////
 						?>
+						<div id="container">
+							<div id="vak_titel_links"></div>
+							<div id="vak_titel"><strong>Stemmen</strong></div>
+							<div id="vak_titel_rechts"></div>
+							
+							<div id="vak_bg">
 						<table width="300">
 							<tr>
 								<td>
@@ -410,6 +521,12 @@ if(isset($_SESSION['id'])) {
 								</td>
 							</tr>
 						</table>
+								</div>
+							
+							<div id="vak_onder_links"></div>
+							<div id="vak_onder"></div>
+							<div id="vak_onder_rechts"></div>
+						</div>
 						<?php
 						///////// EINDE STEMMEN GEDEELTE //////////
 					}
@@ -420,17 +537,23 @@ if(isset($_SESSION['id'])) {
 					<?php
 						//////// 	BADGES GEDEELTE //////
 						
+						?>
+						<div id="container">
+							<div id="vak_titel_links"></div>
+							<div id="vak_titel"><strong>Badges</strong></div>
+							<div id="vak_titel_rechts"></div>
+							
+							<div id="vak_bg"><?php
 						$sql = mysql_query("SELECT * FROM gekochte_badges WHERE member_id='".$mid."'");
 						$sql_speciale = mysql_query("SELECT * FROM speciale_badges_members WHERE member_id='".$mid."'");
-						if(mysql_num_rows($sql) >= 1 || mysql_num_rows($sql_speciale) >= 1) {
-							echo "<strong>Badges</strong><br />";
+						if(mysql_num_rows($sql) >= 1 || mysql_num_rows($sql_speciale) >= 1 ) {
 							
 							while($row = mysql_fetch_assoc($sql)) {
 								$sql_badge = mysql_query("SELECT * FROM shop_badges WHERE badge_id='".$row['badge_id']."'");
 								if(mysql_num_rows($sql_badge) >= 1) {
 									$row_badge = mysql_fetch_assoc($sql_badge);
 									echo "<a href='?p=badges&bid=".$row['badge_id']."'><img border=\"0\" src='".$row_badge['plaatje']."' /></a> ";
-								}
+						 }
 							}
 							
 							while($row = mysql_fetch_assoc($sql_speciale)) {
@@ -440,15 +563,29 @@ if(isset($_SESSION['id'])) {
 									echo "<img src='".$row_badge['plaatje']."' /> ";
 								}
 							}
+								
 						}
-						echo "<br /><br />";
+					$sql_club = mysql_query("SELECT * FROM clublid WHERE member_id='".$mid."'");
+					$row_club = mysql_fetch_assoc($sql_club);
+					if(mysql_num_rows($sql_club) == 1) {
+						echo "<a href='?p=club'><img src='images/clublid.gif' alt='Club Lid badge'></a>";
+					}
+						include ("pagina/badges_functie.php");
+						?>
+								</div>
+								
+							<div id="vak_onder_links"></div>
+							<div id="vak_onder"></div>
+							<div id="vak_onder_rechts"></div>
+						</div>
+						<?php
+						echo "<br /><br />";	
 						///////// EINDE BADGES GEDEELTE /////////
-					?>
+						?>
 					
 					<?php
 					if($instellingen['meubi'] == "aan") {
 						//////// 	MEUBI GEDEELTE //////
-						
 						$sql = mysql_query("SELECT * FROM gekochte_meubi WHERE member_id='".$mid."'");
 						if(mysql_num_rows($sql) >= 1) {
 							echo "<br /><br /><strong>Meubels</strong><br />";
@@ -456,9 +593,27 @@ if(isset($_SESSION['id'])) {
 							while($row = mysql_fetch_assoc($sql)) {
 								$sql_badge = mysql_query("SELECT * FROM shop_meubi WHERE meubi_id='".$row['meubi_id']."'");
 								if(mysql_num_rows($sql_badge) >= 1) {
+						?>
+						<div id="container">
+							<div id="vak_titel_links"></div>
+							<div id="vak_titel"><strong>Meubels</strong></div>
+							<div id="vak_titel_rechts"></div>
+							
+							<div id="vak_bg">
+						<?php
+						
 									$row_badge = mysql_fetch_assoc($sql_badge);
 									echo "<img border=\"0\" src='".$row_badge['plaatje']."' />";
-								}
+								
+						?>
+						
+								</div>
+							
+							<div id="vak_onder_links"></div>
+							<div id="vak_onder"></div>
+							<div id="vak_onder_rechts"></div>
+						</div>
+					<?php }
 							}
 						}
 						///////// EINDE MEUBI GEDEELTE /////////
@@ -475,6 +630,14 @@ if(isset($_SESSION['id'])) {
 						//////////// GASTENBOEK //////////////////
 					$sql_gastenboek = mysql_query("SELECT * FROM gastenboek WHERE member_id='".$mid."'");
 					if(mysql_num_rows($sql_gastenboek) == 1) {
+						?>
+						<div id="container">
+							<div id="vak_titel_links"></div>
+							<div id="vak_titel"><strong>Gastenboek</strong></div>
+							<div id="vak_titel_rechts"></div>
+							
+							<div id="vak_bg">
+							<?php
 						echo "<strong>Gastenboek</strong>";
 						$row_gastenboek = mysql_fetch_assoc($sql_gastenboek);
 						$sql_berichten = mysql_query("SELECT * FROM gastenboek_berichten WHERE gastenboek_id='".$row_gastenboek['gastenboek_id']."' ORDER BY datum DESC LIMIT 4");
@@ -525,19 +688,29 @@ if(isset($_SESSION['id'])) {
 								</tr>
 							</table>
 						</form>
-					<?php
+					</div>
+				
+				<div id="vak_onder_links"></div>
+				<div id="vak_onder"></div>
+				<div id="vak_onder_rechts"></div>
+			</div>
+			<?php
 					}
 					//// EINDE GASTENBOEK GEDEELTE ////
-				?>
-	
-	<?php } if($instellingen['poll'] == "aan") { ?>
-				<?php
+				 } if($instellingen['poll'] == "aan") {
 				
 					//////////////// POLL //////////////////////////
 					$mid = mysql_real_escape_string(substr($_GET['mid'],0,30));
 					$sql_poll = mysql_query("SELECT * FROM poll WHERE member_id='".$mid."'")or die (mysql_error());
 					if(mysql_num_rows($sql_poll) == 1) {
-						echo "<strong>Poll</strong>";
+					?>
+				<div id="container">
+					<div id="vak_titel_links"></div>
+					<div id="vak_titel"><strong>Poll</strong></div>
+					<div id="vak_titel_rechts"></div>
+					
+					<div id="vak_bg">
+				<?php
 						$row_poll = mysql_fetch_assoc($sql_poll);
 						$sql_ip = mysql_query("SELECT * FROM poll_ip WHERE ip='".$_SERVER['REMOTE_ADDR']."' AND poll_id='".$row_poll['poll_id']."'");
 						if(mysql_num_rows($sql_ip) == 0) {
@@ -597,8 +770,20 @@ if(isset($_SESSION['id'])) {
 						}
 					//// EINDE POLL GEDEELTE ////
 					?>
+						</div>
+					
+					<div id="vak_onder_links"></div>
+					<div id="vak_onder"></div>
+					<div id="vak_onder_rechts"></div>
+				</div>
 	
 	<?php } ?>
+			<div id="container">
+				<div id="vak_titel_links"></div>
+				<div id="vak_titel"><strong>Vrienden</strong></div>
+				<div id="vak_titel_rechts"></div>
+				
+				<div id="vak_bg">
 	<?php
 					
 					/// Begin van vrienden gedeelte ////
@@ -633,12 +818,33 @@ if(isset($_SESSION['id'])) {
 						echo "Deze gebruiker heeft nog geen vrienden verzoeken.<br />";
 					}
 					/// Einde van vrienden gedeelte ///
-				} 
+				?>
+						</div>
+					
+					<div id="vak_onder_links"></div>
+					<div id="vak_onder"></div>
+					<div id="vak_onder_rechts"></div>
+				</div>
+				<?php
+				}
 				$sql = mysql_query("SELECT grootprofiel FROM profiel WHERE member_id='".$mid."'");
 				$row = mysql_fetch_assoc($sql);
 				if($row['grootprofiel'] != "") {
-					echo "<strong>Grootprofiel</strong><br>
-					".wordwrap($row['grootprofiel'],40,"\n",1);
+					?>
+				<div id="container">
+					<div id="vak_titel_links"></div>
+					<div id="vak_titel"><strong>Grootprofiel</strong></div>
+					<div id="vak_titel_rechts"></div>
+					
+					<div id="vak_bg">
+					<?php echo wordwrap($row['grootprofiel'],40,"\n",1); ?>
+						</div>
+					
+					<div id="vak_onder_links"></div>
+					<div id="vak_onder"></div>
+					<div id="vak_onder_rechts"></div>
+				</div>
+				<?php
 				}
 			}else{
 				echo "Dit persoon heeft geen profiel gemaakt.";
