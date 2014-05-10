@@ -2,7 +2,7 @@
 
 if(isset($_SESSION['id'])) {
 	if(isset($_POST['submit']) && !empty($_POST['muntjes']) && is_numeric($_POST['muntjes']) && $_POST['muntjes'] > 0) {
-		$muntjes = mysql_real_escape_string(substr(round($_POST['muntjes']),0,30));
+		$muntjes = mysql_real_escape_string(substr(floor($_POST['muntjes']),0,30));
 		$sql = mysql_query("SELECT muntjes,bank FROM leden WHERE member_id='".$_SESSION['id']."'");
 		$row = mysql_fetch_assoc($sql);
 		
@@ -15,7 +15,7 @@ if(isset($_SESSION['id'])) {
 			echo "Je hebt succesvol <strong>".$muntjes."</strong> gestort.";
 		}
 	}elseif(isset($_POST['opnemen']) && !empty($_POST['muntjes']) && is_numeric($_POST['muntjes']) && $_POST['muntjes'] > 0) {
-		$muntjes = mysql_real_escape_string(substr($_POST['muntjes'],0,30));
+		$muntjes = mysql_real_escape_string(substr(floor($_POST['muntjes']),0,30));
 		$sql = mysql_query("SELECT muntjes,bank FROM leden WHERE member_id='".$_SESSION['id']."'");
 		$row = mysql_fetch_assoc($sql);
 		

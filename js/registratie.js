@@ -48,9 +48,7 @@ function ValidateForm(){
 	var gebruikersnaam=document.form1.gebruikersnaam
 	var wachtwoord=document.form1.wachtwoord
 	var wachtwoordh=document.form1.wachtwoordh
-	var dag=document.form1.dag
-	var maand=document.form1.maand
-	var jaar=document.form1.jaar
+	var opvraagwoord=document.form1.opvraagwoord
 	
 	/// Checken of de velden zijn ingevult ///
 	if (gebruikersnaam.value==""){
@@ -67,20 +65,10 @@ function ValidateForm(){
 		alert("Je wachtwoord herhalen is leeg");
 		wachtwoordh.focus()
 		return false
-	}	
-	if (dag.value==""){
-		alert("Je geboortedatum is leeg");
-		dag.focus()
-		return false
-	}	
-	if (maand.value==""){
-		alert("Je geboortedatum is leeg");
-		maand.focus()
-		return false
-	}	
-	if (jaar.value==""){
-		alert("Je geboortedatum is leeg");
-		jaar.focus()
+	}		
+	if (opvraagwoord.value==""){
+		alert("Je opvraagwoord is leeg");
+		opvraagwoord.focus()
 		return false
 	}
 	if (email.value==""){

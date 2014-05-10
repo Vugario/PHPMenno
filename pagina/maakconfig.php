@@ -1,4 +1,11 @@
 <?php
+$beschrijving = "
+<strong>PHPMenno Versie 5</strong><br />
+Versie 5 is een onwijs uitgebreide versie.<br />
+Er zijn onwijs veel nieuwe functies en mogelijkheden.<br />
+En als dat nog niet genoeg is, Wanneer je ergens niet uitkomt, is er volle support op Habbers.nl.<br />Hier is een apart sub-forum opgericht voor PHPMenno<br />
+<br />";
+
 if(!function_exists("file_put_contents")) {
    function file_put_contents($url, $data) {
       $filehandle = fopen($url, 'a');
@@ -8,12 +15,21 @@ if(!function_exists("file_put_contents")) {
 }
 
 ?>
-<img src="images/installatie.gif" /><br>
-<br>
 <span style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px;">
-<?php
+<div style="background: url(images/banner_bg.gif); height:78px;">
 
-chmod('config.php', 0777);
+	<div style="float:left; text-align:center;height:78px;">
+	<center>
+	<img src="images/banner.gif"><img src="images/stap1.gif">
+	</center>
+	</div>
+</div>
+<div style="width: 783px; text-align: left;">
+	<div style="float:left; height:455px; padding-right: 10px; width: 207px;background:url(images/links_bg.gif);">
+		<?php echo $beschrijving; ?>
+	</div>
+	<div style="float:left;width: 546px; padding-left: 20px; padding-top: 20px;">
+<?php
 
 if(is_writable("config.php") == false) {
 	echo "<strong>Foutje opgetreden</strong><br />
@@ -70,8 +86,12 @@ session_start();
 		}
 	}
 	?>
+	<h2>Installatie PHPMenno</h2>
+	Welkom bij de installatie van PHPMenno.<br />
+	Bij deze installatie moet je een aantal gegevens invullen zodat het systeem zich kan installeren.<br />
+	<br />
+	Vul hieronder uw MySQL Gegevens in.<br />
 	<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
-		<h2 style="margin:0px;">Vul hier uw MySQL gegevens in</h2>
 		Host (meestal localhost)<br />
 		<input type="text" name="host" /><br />
 		Database naam<br />
@@ -82,7 +102,17 @@ session_start();
 		<input type="password" name="password" /><br />
 		<input type="submit" name="submit" value="Installeer MySQL"><br>
 	</form>
+	<br />
+	<br />
+	<strong>Wat is dit?</strong><br />
+	MySQL gegevens zijn de gegevens naar je database.<br />
+	Als je een websitehost hebt, kan je inloggen op je host.<br />
+	Wanneer je dat hebt gedaan kan je een MySQL Database aanmaken en een MySQL gebruiker en een wachtwoord.<br />
+	Deze gegevens moet je hierboven invullen.<br />
+	<br />
 	<?php
 }
 ?>
+	</div>
+</div>
 </span>

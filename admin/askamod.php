@@ -1,6 +1,6 @@
 <?php
 
-if(isset($_SESSION['admin']) || isset($_SESSION['nieuwsreporter']) || isset($_SESSION['forumbeheerder'])) {
+if(isset($_SESSION['admin']) || isset($_SESSION['nieuwsreporter']) || isset($_SESSION['forumbeheerder']) || isset($_SESSION['moderator'])) {
 	if(isset($_GET['a'])) {
 		if($_GET['a'] == "bekijken") {
 			$sql = mysql_query("SELECT * FROM askamod");

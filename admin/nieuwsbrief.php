@@ -1,5 +1,5 @@
 <?php
-if(isset($_SESSION['admin'])) {
+if(isset($_SESSION['admin']) || isset($_SESSION['moderator'])) {
 function randomwachtwoord($length)
 {
     $tekens = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";

@@ -30,7 +30,10 @@ if(isset($_SESSION['admin'])) {
 						</tr>
 						<tr>
 							<td>Level</td>
-						  <td><input type="text" name="level" style="width:20px;" maxlength="1" value="<?php echo $row['level']; ?>" /> <br />						    0 = normal<br /> 2 = nieuwsreporter<br /> 3 = forum beheerder<br /> 6 = administrator</td>
+						  <td><input type="text" name="level" style="width:20px;" maxlength="1" value="<?php echo $row['level']; ?>" /> <br />						    0 = normal<br /> 2 = nieuwsreporter<br />
+3 = forum beheerder<br />
+5 = moderator<br />
+ 6 = administrator</td>
 						</tr>
 						<tr>
 							<th colspan="2"><input type="submit" name="wijzigen" value="Wijzigen" /></th>
@@ -81,18 +84,20 @@ if(isset($_SESSION['admin'])) {
 	}else{
 		$sql = mysql_query("SELECT gebruikersnaam,email,member_id,ip FROM leden");
 		echo "
-			<table>
+			<table width='100%'>
 				<tr>
-					<td>Gebruikersnaam</td>
-					<td>IP</td>
-					<td>Wijzigen</td>
-					<td>Verwijderen</td>
-					<td>IP Bannen</td>
+					<td><strong>Gebruikersnaam</strong></td>
+					<td><strong>Email</strong></td>
+					<td><strong>IP</strong></td>
+					<td><strong>Wijzigen</strong></td>
+					<td><strong>Verwijderen</strong></td>
+					<td><strong>IP Bannen</strong></td>
 				</tr>";
 		while($row = mysql_fetch_assoc($sql)) {
 			echo "
 				<tr>
 					<td>".$row['gebruikersnaam']."</td>
+					<td>".$row['email']."</td>
 					<td>".$row['ip']."</td>
 					<td><a href='".$_SERVER['PHP_SELF']."?p=admin_gebruikers&a=wijzigen&mid=".$row['member_id']."'>Wijzigen</a></td>
 					<td><a href='".$_SERVER['PHP_SELF']."?p=admin_gebruikers&a=verwijderen&mid=".$row['member_id']."'>Verwijderen</a></td>

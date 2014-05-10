@@ -1,30 +1,16 @@
-<table id="table1" width="98%" height="49" border="0" cellpadding="0" cellspacing="0">
-
-	<tr>
-		<td width="8" height="25">
-			<img src="images/vakje_01.gif" width="8" height="25" alt=""></td>
-		<td height="25" background="images/vakje_02.gif">
-			<font face="Verdana" size="1"><b><img src="http://habbo-elements.nl/lettergen/testgen.php?message=Uitloggen"></b></td>
-<td width="8" height="25">
-			<img src="images/vakje_03.gif" width="8" height="25" alt=""></td>
-	</tr>
-	<tr>
-
-		<td width="8" height="15" background="images/vakje_04.gif">
-	  </td>
-	  <td height="15" bgcolor="#FFFFFF" valign="top">
-
-
 <?php
+error_reporting(0);
 if(!isset($_SESSION['id'])) {
 	echo "Je bent niet ingelogd, <a href='index.php'>Ga terug</a>.";
 	die();
 }
-?><?php
+
 
 if(isset($_SESSION['id'])) {
-	
+	mysql_query("DELETE FROM sessies WHERE ip = '".$_SERVER['REMOTE_ADDR']."'");
 	session_destroy();
+	session_start();
+	$_SESSION['uitloggen'] = true;
 	echo "Je bent nu succesvol uitgelogd.<br />
 	Je wordt in 2 seconden doorgelinkt.";
 	echo '<meta http-equiv="refresh" content="2;URL=index.php" />';
@@ -34,19 +20,3 @@ if(isset($_SESSION['id'])) {
 }
 
 ?>
-
-
-          </td>
-	  <td width="8" height="15" background="images/vakje_06.gif">
-	  </td>
-	</tr>
-	<tr>
-		<td width="8" height="9">
-			<img src="images/vakje_07.gif" width="8" height="9" alt=""></td>
-		<td height="9" background="images/vakje_08.gif">
-			</td>
-
-		<td width="8" height="9">
-			<img src="images/vakje_09.gif" width="8" height="9" alt=""></td>
-	</tr>
-</table>

@@ -34,6 +34,7 @@ if(!isset($_SESSION['id'])) {    // Dit betekent, Als de gebruiker niet is ingel
 	&raquo; <a href="?p=shop&a=shop">Shop</a><br />
 	&raquo; <a href="?p=bank">Bank</a><br />
 	&raquo; <a href="?p=faq">Algemene Poll</a><br />
+	&raquo; <a href="?p=youtube&a=lijst">Youtube</a><br />
 	<br />
 	<strong>Games</strong><br />
 	&raquo; <a href="?p=kluis">Kraak de kluis</a><br />
@@ -49,6 +50,8 @@ if(!isset($_SESSION['id'])) {    // Dit betekent, Als de gebruiker niet is ingel
 	&raquo; <a href="?p=gegevensveranderen">Gegevens Veranderen</a><br />
 	&raquo; <a href="?p=poll">Poll</a><br />
 	&raquo; <a href="?p=profiel">Profiel</a><br />
+	&raquo; <a href="?p=cadeau">Cadeau's</a><br />
+	&raquo; <a href="?p=stuurtroffee">Stuur troffee</a><br />
 	&raquo; <a href="?p=bericht">Berichten</a><br />
 	<br />
 	<strong>Overige</strong><br />
@@ -59,12 +62,34 @@ if(!isset($_SESSION['id'])) {    // Dit betekent, Als de gebruiker niet is ingel
 	&raquo; <a href="?p=faq">F.A.Q.</a><br />
 	<br />
 	&raquo; <a href="?p=uitloggen">Uitloggen</a><br /><br />
-<?php } if(isset($_SESSION['admin'])) { // Dit betekent, Als je als admin bent ingelogd. ?>
+	<?php } 
+	echo "<strong>Guild</strong><br />";
+	if(isset($_SESSION['id'])) {
+		$sql = mysql_query("SELECT * FROM guild WHERE member_id='".$_SESSION['id']."'");
+		if(mysql_num_rows($sql) ==  1) {
+			?>
+			&raquo; <a href="?p=guildwijzigen">Wijzigen</a><br />
+			&raquo; <a href="?p=guildbeheren">Beheren</a><br />
+			<?php
+		}
+		$sql = mysql_query("SELECT * FROM guild_leden WHERE member_id='".$_SESSION['id']."'");
+		if(mysql_num_rows($sql) ==  1) { ?>
+			&raquo; <a href="?p=guildleden">Leden</a><br />
+			<?php
+		}else{
+			echo "&raquo; <a href='?p=guildmaken'>Aanmaken</a><br />";
+		}
+		echo "&raquo; <a href='?p=guildverzoeken'>Verzoeken</a><br />";
+		echo "&raquo; <a href='?p=guildzoeken'>Zoeken</a><br /><br />";
+	}
+if(isset($_SESSION['admin'])) { // Dit betekent, Als je als admin bent ingelogd. ?>
 	<strong>Admin Panel</strong><br />
 	&raquo; <a href="?p=admin_gebruikers">Leden Beheren</a><br />
 	&raquo; <a href="?p=admin_tijd">Tijd Verbannen</a><br />
 	&raquo; <a href="?p=admin&a=instellingen">Instellingen Veranderen</a><br />
 	&raquo; <a href="?p=admin_gebruikers">Leden Verbannen</a><br />
+	&raquo; <a href="?p=admin_blogs">Blogs beheren</a><br />
+	&raquo; <a href="?p=admin_reacties">Reacties beheren</a><br />
 	&raquo; <a href="?p=admin_faq">F.A.Q. Beheren</a><br />
 	&raquo; <a href="?p=admin_askamod">Ask a mod beheren</a><br />
 	&raquo; <a href="?p=admin_berichtenbalk">Berichtenbalk Beheren</a><br />

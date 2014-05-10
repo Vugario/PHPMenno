@@ -5,39 +5,8 @@ $paginaid         = 1;
 $referentieid     = 1;
 
 if(isset($_SESSION['admin']) && isset($_SESSION['ip']) && isset($_SESSION['id']) && $_SESSION['ip'] == $_SERVER['REMOTE_ADDR']) {
-	
 	if(isset($_GET['actie']) && !empty($_GET['actie']))
 	{
-	?>
-	<script language="javascript" type="text/javascript" src="tiny_mce/tiny_mce.js"></script>
-	<script language="javascript" type="text/javascript">
-	tinyMCE.init({
-			mode : "textareas",
-			theme : "advanced",
-			plugins : "spellchecker,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,insertdatetime,preview,zoom,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras",
-			theme_advanced_buttons1_add_before : "save,newdocument,separator",
-			theme_advanced_buttons1_add : "fontselect,fontsizeselect",
-			theme_advanced_buttons2_add : "separator,insertdate,inserttime,preview,separator,forecolor,backcolor",
-			theme_advanced_buttons2_add_before: "cut,copy,paste,pastetext,pasteword,separator,search,replace,separator",
-			theme_advanced_buttons3_add_before : "tablecontrols,separator",
-			theme_advanced_buttons3_add : "emotions,iespell,media,advhr,separator,print,separator,ltr,rtl,separator,fullscreen",
-			theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,spellchecker,cite,abbr,acronym,del,ins,|,visualchars,nonbreaking",
-			theme_advanced_toolbar_location : "top",
-			theme_advanced_toolbar_align : "left",
-			theme_advanced_path_location : "bottom",
-			content_css : "example_data/example_word.css",
-			plugin_insertdate_dateFormat : "%Y-%m-%d",
-			plugin_insertdate_timeFormat : "%H:%M:%S",
-			extended_valid_elements : "img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]",
-			external_link_list_url : "example_data/example_link_list.js",
-			external_image_list_url : "example_data/example_image_list.js",
-			flash_external_list_url : "example_data/example_flash_list.js",
-			file_browser_callback : "mcFileManager.filebrowserCallBack",
-			paste_auto_cleanup_on_paste : true,
-			paste_convert_headers_to_strong : true
-		});
-	</script>
-	<?php
 		$acties = array('verhogen','verlagen','verwijderen','toevoegen','wijzigen');
 		
 		if(in_array($_GET['actie'],$acties))
@@ -236,14 +205,23 @@ if(isset($_SESSION['admin']) && isset($_SESSION['ip']) && isset($_SESSION['id'])
 			$content     = stripslashes($rij['content']);
 			
 	?>
+	<script type="text/javascript" src="editor/scripts/wysiwyg.js"></script>
+	<script type="text/javascript" src="editor/scripts/wysiwyg-settings.js"></script>
+	<!-- 
+	Attach the editor on the textareas
+	-->
+	<script type="text/javascript">
+	// Use it to attach the editor to all textareas with full featured setup
+	//WYSIWYG.attach('all', full);
 	
-	<div id="content">
-	<form name="formulier" action="" method="post">
+	// Use it to attach the editor directly to a defined textarea
+	WYSIWYG.attach('content',small); // default setup
+	</script>
+	<form name="formulier" action="" onsubmit="return submitForm();" method="post">
 	Titel: <input type="text" id="titel" name="titel" size="35" value="<?php echo $titel; ?>" title="De gewenste titel."><br><br>
-	<textarea name="content" rows="20" style="width: 100%;" id="content" title="De gewenste content"><?php echo $content; ?></textarea><br>
+	<textarea id="content" name="content"><?php echo $content; ?></textarea><br>
 	<input type="submit" name="versturen" value="Versturen" id="versturen"> <INPUT type="reset" id="wissen" name="wissen" value="Wissen">
 	</form>
-	</div>
 		
 	<?php    
 		}else{

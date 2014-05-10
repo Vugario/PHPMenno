@@ -1,5 +1,5 @@
 <?php
-if(isset($_SESSION['admin'])) {
+if(isset($_SESSION['admin']) || isset($_SESSION['moderator'])) {
 	if(isset($_GET['a'])) {
 		if($_GET['a'] == "unbannen" && isset($_GET['ip']) && isset($_GET['id'])) {
 			echo $admin->unban($_GET['ip'],$_GET['id']);

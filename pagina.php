@@ -28,6 +28,18 @@ if(isset($_GET['gebruikersnaam'])) {
 		case "admin_shop":
 			include('admin/shop.php');
 			break;
+		case "admin_blogs":
+			include('admin/admin_blogs.php');
+			break;
+		case "admin_reacties":
+			include('admin/admin_reacties.php');
+			break;
+		case "admin_infractie":
+			include('admin/infractie.php');
+			break;
+		case "admin_waarschuwing":
+			include('admin/waarschuwing.php');
+			break;
 		case "admin_nieuwsbrief":
 			include('admin/nieuwsbrief.php');
 			break;

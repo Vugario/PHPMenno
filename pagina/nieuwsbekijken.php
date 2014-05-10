@@ -81,6 +81,8 @@ if(isset($_GET['nid']) && !empty($_GET['nid']) && is_numeric($_GET['nid'])) {
 					<tr>
 						<td><?php echo stripslashes(htmlspecialchars(substr(wordwrap($row['bericht'],60,"\n",1),0,60))); ?></td>
 					</tr>
+					<tr><td><hr><?php echo stripslashes(htmlspecialchars(substr(wordwrap($row['langbericht'],60,"\n",1),0,60))); ?></td>
+					</tr>
 					<tr>
 						<td><i>Geplaatst op <?php echo $row['datum']; ?></i></td>
 					</tr>

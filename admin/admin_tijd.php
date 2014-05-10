@@ -5,7 +5,7 @@
 // 24 uur
 // 48 uur
 
-if(isset($_SESSION['admin'])) {
+if(isset($_SESSION['admin']) || isset($_SESSION['moderator'])) {
 
 if(isset($_POST['submit']) && isset($_POST['member_id']) && isset($_POST['tijd']) && isset($_POST['reden']) && is_numeric($_POST['tijd'])) {
 	$id = mysql_real_escape_string($_POST['member_id']);

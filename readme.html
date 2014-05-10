@@ -1,148 +1,226 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Leden Systeem V2.1 Menno Handleiding</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Leden Systeem V5 PHPMenno Handleiding</title>
 <style type="text/css">
-body {
-	font-family:Verdana, Arial, Helvetica, sans-serif;
-	font-size:12px;
+.main { background:url('http://htmusic.nl/htmusicbeta/site/images/bg-main.gif') no-repeat; 
+padding:25px 20px 0; width:900px; overflow:hidden; }
+.pagecontent .txt-content { width:100%; overflow:hidden; line-height:22px; color:#797979; margin:0 0 25px; }
+.pagecontent h2 { color:#252525; line-height:26px; font-size:18px; font-weight:normal; margin-top: 0; margin-right: 0; margin-bottom: 22px; margin-left: 0; }
+.pagecontent .txt-content p { margin:0 0 15px; }
+img { border-style:none; }
+.style1 {
+				font-size: medium;
+}
+.style2 {
+				font-size: medium;
+				font-weight: bold;
+				font-family: Calibri;
+}
+.style3 {
+				font-size: medium;
+				font-family: Calibri;
+				border: 1px solid #000000;
+}
+.style4 {
+				font-size: medium;
+				font-family: Calibri;
+}
+.style5 {
+				font-family: Calibri;
 }
 </style>
 </head>
 
 <body>
 
-<div id="top" style="background:url(http://images.habbohotel.nl/c_images/hotelviews/web_view_bg_de.gif); height:154px; width:928px;">
-<span style="color:#FFFFFF;font-size:30px">&nbsp;&nbsp;<strong>V2.3 Profielen Systeem</strong></span></div>
-<br />
-<br />
-<strong>Handleiding V2.3 Profielen Systeem - Made by Menno Wolvers</strong><br />
-Gescript voor Habbers Forum - <a href="http://www.habbers.nl/" target="_blank">Habbers.n</a>l en gescript door <a href="http://www.websiteready.nl/">Websiteready.nl</a> <br />
-<br />
-<a href="#inbouwen">Het inbouwen</a><br />
-<a href="#menu">Menu Inbouwen</a><br />
-<a href="#installeren">Systeem Installeren</a><br />
-<br />
-<div style="border: 1px solid #990000;" id="problemen">
-<h2>Problemen</h2>
+               <div class="main">
+                  <div class="pagecontent">
+                     <div class="txt-content">
+                        <h2 class="style4">
 
-Heb je een probleem met grote lettertype's?<br />
+<img alt="http://www.habboville.nl/upload/uploads/1288832291.png" longdesc="http://www.habboville.nl/upload/uploads/1288832291.png" src="http://www.habboville.nl/upload/uploads/1288832291.png" width="500" height="113" /></h2>
+						<span class="style1"><span class="style5">Let op phpmenno V5.0 en lager wordt niet meer 
+						geadviseerd daarom zou je beter V5.1 nemen!<br />
+						</span></span>&nbsp;<span class="style4"><br />
+						</span>
+<strong><span class="style4">Handleiding V5 - Made by Menno Wolvers en Simon Boer</span></strong><span class="style4"><br />
+						</span><span class="style4">Gescript voor Habbers Forum -
+						</span> <a href="http://www.habbers.nl/" target="_blank">
+						<span class="style4">Habbers.nl</span></a><span class="style1"><span class="style5"> en gescript door Menno Wolvers en Simon Boer <br />
+<br />
+						</span></span>
+<a href="#inbouwen"><span class="style4">Het inbouwen</span></a><span class="style4"><br />
+						</span>
+<a href="#menu"><span class="style4">Menu Inbouwen</span></a><span class="style4"><br />
+						</span>
+<a href="#installeren"><span class="style4">Systeem Installeren</span></a><span class="style1"><span class="style5"><br />
+<br />
+						</span></span>
+<div style="border: 1px solid #990000;" id="problemen">
+<h2 class="style4">Problemen</h2>
+
+<span class="style1"><span class="style5">Heb je een probleem met grote lettertype's?<br />
 Dan komt het door CSS<br />
-Open je index.php en plak n�t boven &lt;/head&gt; deze code:<br />
+Open je index.php en plak nèt boven &lt;/head&gt; deze code:<br />
 <br />
-<div style="border:1px solid #000000;">&lt;style type=&quot;text/css&quot;&gt;<br />
-table,tr,td,th {<br />
+</span></span>
+<div style="border:1px solid #000000; width: 1028px;">&lt;<span class="style5"></span><span class="style1"><span class="style5">style type=&quot;text/css&quot;&gt;<br />
+				</span></span><span class="style5"></span><span class="style1">
+				<span class="style5">table,tr,td,th {<br />
 &nbsp;&nbsp;&nbsp;font-size: 11px;<br />
-}<br />
+				</span></span>}<span class="style1"><span class="style5"><br />
 &lt;/style&gt;<br />
+				</span></span>
 </div>
 </div>
+						<span class="style1"><span class="style5">
 <br />
 <br />
+						</span></span>
+<div style="border: 1px solid #990000;" id="banners">
+<h2 class="style4">Banners</h2>
+
+<span class="style1"><span class="style5">In PHPMenno zit een speciaal "banner systeem", door een code bovenaan je site te zetten kan je die banners zien. Dit is de code:
+</span>
+<TEXTAREA onblur='this.setAttribute("value",this.value);' style="WIDTH: 611px; COLOR: black; HEIGHT: 143px" rows=7 cols=73 name="S1" class="style5">&lt;?php
+$sql = mysql_query("SELECT * FROM banners WHERE actief='aan' ORDER BY RAND() LIMIT 1");
+      while($row = mysql_fetch_assoc($sql)) {
+       echo "&lt;center&gt;&lt;a href='".$row['url']."'&gt;&lt;img border=\"1\" src='".$row['banner']."' /&gt;&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/center&gt;";
+      }
+?&gt;</TEXTAREA><span class="style5"> </span></span>
+
+</div>
 <div style="border: 1px solid #990000;" id="inbouwen">
-	<h2>Inbouwen</h2>
-	Het inbouwen van dit systeem is eigenlijk heel makkelijk.<br />
+	<h2 class="style4">Inbouwen</h2>
+	<span class="style1"><span class="style5">Het inbouwen van dit systeem is eigenlijk heel makkelijk.<br />
 	Je hebt uiteraard al een eigen index.html of index.php.<br />
 	Anders kan je gewoon kladblok openen en precies doen wat ik nu zeg :<br /><br />
 	-Plak deze code helemaal bovenaan je index.php<br />
-	<div style="border:1px solid #000000;">&lt;?php<br />
+	</span></span>
+	<div style="border:1px solid #000000;"><span class="style1">
+					<span class="style5">&lt;?php<br />
 			/// Start van installatie check ///<br />
 			if(!isset($var) &amp;&amp; file_get_contents(&quot;config.php&quot;) == &quot;&quot;) {<br />
 include('pagina/maakconfig.php');<br />
 die();<br />
 }else{<br />
 require_once('class/head.class.php');<br />
-}<br />
+					</span></span>}<span class="style1"><span class="style5"><br />
 /// Einde van installatie check ///<br />
-?&gt;</div>
+?&gt;</span></span></div>
+	<span class="style1"><span class="style5">
 	<br />
 	-Op de plek waar je je menu wilt hebben.<br />
 	Plak dit script:<br />
-	<div style="border:1px solid #000000;">
+	</span></span>
+	<div class="style3">
       &lt;?php<br />
         include('menu.php');<br />
       ?&gt;
 	</div>
+	<span class="style1"><span class="style5">
 	<br />
     <br />
 -Op de plek waar je je algemene tekst wilt hebben. Dus alle tekst van elke pagina.<br />
 Plak dit script:<br />
-<div style="border:1px solid #000000;"> &lt;?php<br />
+	</span></span>
+<div class="style3"> &lt;?php<br />
   include('pagina.php');<br />
   ?&gt; </div>
+	<span class="style1"><span class="style5">
 <br />
 <br />
 <br />
 -Op de plek waar je je berichten balk wilt hebben.<br />
 Plak dit script:<br />
-<div style="border:1px solid #000000;"> &lt;?php<br />
+	</span></span>
+<div class="style3"> &lt;?php<br />
   include('pagina/balk.php');<br />
   ?&gt; </div>
+	<span class="style1"><span class="style5">
 <br />
 <br />
 <br />
 -Op de plek waar je je Laatste 5 Geregistreerde gebruikers wilt hebben<br />
 Plak dit script:<br />
-<div style="border:1px solid #000000;"> &lt;?php<br />
+	</span></span>
+<div class="style3"> &lt;?php<br />
   include('statistieken/laatste_5.php');<br />
   ?&gt; </div>
+	<span class="style1"><span class="style5">
 <br />
 <br />
 <br />
 -Op de plek waar je je Top 5 rijkste leden wilt hebben<br />
 Plak dit script:<br />
-<div style="border:1px solid #000000;"> &lt;?php<br />
+	</span></span>
+<div class="style3"> &lt;?php<br />
   include('statistieken/top_10_muntjes.php');<br />
   ?&gt; </div>
+	<span class="style1"><span class="style5">
 <br />
 <br />
 <br />
 -Op de plek waar je je nieuws headlines wilt hebben<br />
 Plak dit script:<br />
-<div style="border:1px solid #000000;"> &lt;?php<br />
+	</span></span>
+<div class="style3"> &lt;?php<br />
   include('statistieken/nieuwsheadlines.php');<br />
   ?&gt; </div>
+	<span class="style1"><span class="style5">
 <br />
 <br />
 <br />
 -Op de plek waar je je Top 5 gebruikers wilt hebben.<br />
 Plak dit script:<br />
-<div style="border:1px solid #000000;"> &lt;?php<br />
+	</span></span>
+<div class="style3"> &lt;?php<br />
 		include('statistieken/top_5.php');<br />
   ?&gt; </div>
+	<span class="style1"><span class="style5">
 <br />
 <br />
 <br />
 -Op de plek waar je je aantal geregistreerde gebruikers wilt hebben.<br />
 Plak dit script:<br />
-<div style="border:1px solid #000000;"> &lt;?php<br />
+	</span></span>
+<div class="style3"> &lt;?php<br />
 		include('statistieken/aantal_leden.php');<br />
   ?&gt; </div>
+	<span class="style1"><span class="style5">
 <br />
 <br />
 <br />
 -Op de plek waar je 5 willekeurig gekozen gebruikers wilt hebben.<br />
 Plak dit script:<br />
-<div style="border:1px solid #000000;"> &lt;?php<br />
+	</span></span>
+<div class="style3"> &lt;?php<br />
 		include('statistieken/random_5.php');<br />
   ?&gt; </div>
+	<span class="style1"><span class="style5">
 <br />
 <br />
 <br />
 -Op de plek waar je de laatste nieuwsberichten wilt hebben.<br />
 Plak dit script:<br />
-<div style="border:1px solid #000000;"> &lt;?php<br />
+	</span></span>
+<div class="style3"> &lt;?php<br />
 		include('statistieken/laatste_nieuws.php');<br />
   ?&gt; </div>
+	<span class="style1"><span class="style5">
 <br />
 <br />
 <br />
 -Op de plek waar je het aantal online gasten en leden wilt hebben.<br />
 Plak dit script:<br />
-<div style="border:1px solid #000000;"> &lt;?php<br />
+	</span></span>
+<div class="style3"> &lt;?php<br />
 		include('statistieken/online.php');<br />
   ?&gt; </div>
+	<span class="style1"><span class="style5">
 <br />
 <br />
 <br />
@@ -154,17 +232,22 @@ Plak dit script:<br />
 	<br />
 	Dit was het inbouwen.<br />
 	<br />
-	<a href="#top">Naar Boven</a>
+	</span></span>
+	<a href="#top"><span class="style4">Naar Boven</span></a><span class="style4">
+	</span>
 </div>
+						<span class="style1"><span class="style5">
 <br />
 <br />
+						</span></span>
 <div style="border: 1px solid #990000;" id="menu">
-	<h2>Menu Inbouwen</h2>
-	Open menu.php in de algemene map<br />
-	Je ziet de wel bekende <a href="#">link</a> codes staan.<br />
+	<h2 class="style4">Menu Inbouwen</h2>
+	<span class="style1"><span class="style5">Open menu.php in de algemene map<br />
+	Je ziet de wel bekende </span></span> <a href="#"><span class="style4">link</span></a><span class="style1"><span class="style5"> codes staan.<br />
 	Maar ook een paar onbekende codes die ik nu even met jullie bespreek.<br />
 	Hier vind je de hele menu.php code uitgelegd :<br />
-	<div style="border:1px solid #000000;">
+	</span></span>
+	<div class="style3">
 	&lt;?php if(!isset($_SESSION['id'])) { ?&gt;<br />
 	<br />	
 	Zet hier je normale html linken<br />
@@ -185,15 +268,20 @@ Plak dit script:<br />
 	<br />
 	Hier kan je linken zetten die je altijd ziet, maakt niet uit of je wel of niet bent ingelogd.  <br />
 	</div>
+	<span class="style1"><span class="style5">
 	<br />
 	Dit was het inbouwen van het menu<br />	
-	<a href="#top">Naar Boven</a>
+	</span></span>	
+	<a href="#top"><span class="style4">Naar Boven</span></a><span class="style4">
+	</span>
 </div>
+						<span class="style1"><span class="style5">
 <br />
 <br />
+						</span></span>
 <div style="border: 1px solid #990000;" id="installeren">
-	<h2>Systeem Installeren</h2>
-	<p>Het installeren is heel simpel,<br />
+	<h2 class="style4">Systeem Installeren</h2>
+	<p class="style4">Het installeren is heel simpel,<br />
 	Zodra je alle bestanden hebt geupload kan je gewoon index.php laden en de installatie komt vanzelf te voorschijn.
 	  <br />
 	Vul hier dus je MySQL gegevens in die je van je host heb gekregen:<br />
@@ -202,25 +290,27 @@ Plak dit script:<br />
 	-Databasenaam<br />
 	-Host (meestal localhost)<br />
   </p>
-	<p>Zodra je de hele installatie hebt uitgevoerd zou je systeem perfect moeten werken. <br />
+	<p><span class="style1"><span class="style5">Zodra je de hele installatie hebt uitgevoerd zou je systeem perfect moeten werken. <br />
+	</span></span><span class="style2">Belangrijk!!!</span><span class="style1"><span class="style5"> je moet de bestanden "config.php", "pagina/maakconfig.php" en "install.php" CHMODDEN naar 777 voor een optimale werking!!!<br>
 	<br />
 	Als je systeem nu nog steeds niet werkt.<br />
-  Neem contact op met de developer van dit systeem.<br />
-      <a href="http://www.phpmenno.nl/" target="_blank">Klik hier voor contact</a><br />
+  Neem contact op met de developers van dit systeem.<br />
+      <a href="http://www.habbers.nl/index.php?showtopic=89027">of ga naar 
+	habbers menno ledensysteem topic!</a><br />
       <br />
       <br />
       <br />
       <br />
-      <a href="#top">Naar Boven</a>  </p>
+      </span></span>
+      <a href="#top"><span class="style4">Naar Boven</span></a><span class="style4">
+	</span>  </p>
 </div>
 
 
-
-
-
-
-<a href="http://www.phpmenno.nl/" target="_blank"><h3>Bij het ondervinden van problemen klik hier en neem contact op met de maker</h3></a>
-
-
+                     </div>
+                  </div>
+               </div>
+            
 </body>
+
 </html>

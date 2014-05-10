@@ -1,58 +1,52 @@
 <?php
 
 require_once('config.php');
+require_once("pagina/cookiecheck.php");
 require_once('instellingen.php');
-require_once("class/admin.class.php");
-require_once("class/habbo.class.php");
 require_once("class/ubb.class.php");
+if(isset($_SESSION['admin'])) {
+require_once("class/admin.class.php"); }
 require_once("pagina/ipban.php");
-require_once("class/pb.class.php");
-require_once("class/profiel.class.php");
-require_once("class/gastenboek.class.php");
 require_once("class/poll.class.php");
-require_once("class/shop.class.php");
-require_once("class/blogs.class.php");
-require_once("class/forum.class.php");
-require_once("class/nieuws.class.php");
 require_once("pagina/inlogcheck.php");
 if(isset($_SESSION['id'])) {
 	require_once('pagina/alert.php');
+	require_once('pagina/nieuwcadeau.php');
 }
 
 class profielen {
-		function registeren($gebruikersnaam,$wachtwoord,$dag,$maand,$jaar,$email) {
+		function registeren($gebruikersnaam,$wachtwoord,$opvraagwoord,$email) {
 		// Eerst halen we alle rare tekens eruit EN hakken we bij de 255 letters/cijfers de rest eraf, Maximale lengte is 255
 		$gebruikersnaam = mysql_real_escape_string(substr($gebruikersnaam,0,25));
 		$wachtwoord = mysql_real_escape_string(substr($wachtwoord,0,255));
-		$geboortedatum = mysql_real_escape_string(substr($dag."-".$maand."-".$jaar,0,255));
+		$opvraagwoord = mysql_real_escape_string(substr($opvraagwoord,0,255));
 		$email = mysql_real_escape_string(substr($email,0,60));
 		
 		if(ACCOUNTPERIP != "nee") {
 			$sql = mysql_query("SELECT ip FROM leden WHERE ip='".$_SERVER['REMOTE_ADDR']."'");
 			if(mysql_num_rows($sql) >= 1) {
-				echo "Je hebt al een account, <a href='#' onclick='history.go(-1)'>Ga terug</a>";
+				echo "Je hebt helaas al een account aangemaakt op deze website.<br /><a href='javascript:history.go(-1)'>Ga terug</a>";
 				die();
 			}
 		}
 		// checken of ip al bestaat
 		
 		// nu gaan we hem erin stoppen
-		$sql = mysql_query("INSERT INTO leden (gebruikersnaam,wachtwoord,geboortedatum,email,level,regdatum,ip,punten,muntjes,avatar,rang) VALUES ('".$gebruikersnaam."','".md5($wachtwoord)."','".$geboortedatum."','".$email."','0',NOW(),'".$_SERVER['REMOTE_ADDR']."','0','".MUNTJESBIJREGISTRATIE."','','habbo')");
-		
-		$sql_member_id = mysql_query("SELECT member_id FROM leden WHERE gebruikersnaam='".$gebruikersnaam."' AND email='".$email."' AND geboortedatum='".$geboortedatum."' LIMIT 1");
-		$row_member_id = mysql_fetch_assoc($sql_member_id);
-		
-		mysql_query("INSERT INTO profiel (member_id,naam,achternaam,woonplaats,hobby,website,favo_fansite,favo_kamer,grootprofiel)
-						VALUES ('".$row_member_id['member_id']."','','','','','','','','')");
+		$sql = mysql_query("INSERT INTO leden (gebruikersnaam,wachtwoord,opvraagwoord,email,level,regdatum,ip,punten,muntjes,avatar,rang,handtekening) VALUES ('".$gebruikersnaam."','".md5($wachtwoord)."','".$opvraagwoord."','".$email."','0',NOW(),'".$_SERVER['REMOTE_ADDR']."','0','".MUNTJESBIJREGISTRATIE."','','habbo','')");
+		$row_member_id = mysql_insert_id();
 		if(eregi("Duplicate",mysql_error())) {
 			return "De gebruikersnaam of email die je hebt ingevuld is al van een van onze andere leden.<br />
 			Kies dus een andere.<br />
 			<a href='javascript:history.go(-1)'>Ga terug</a>.";
 		}elseif(mysql_error() != "") {
-			return "Er is een fout opgetreden.<br />Waarschijnlijk bestaat deze gebruikersnaam of email al.<br /><a href='#' onclick='history.go(-1)'>Ga terug</a>";
+			return "De gebruikersnaam of email die je hebt ingevuld is al van een van onze andere leden.<br />
+			Kies dus een andere.<br />
+			<a href='javascript:history.go(-1)'>Ga terug</a>.";
 		}else{
+			mysql_query("INSERT INTO profiel (member_id,naam,achternaam,woonplaats,hobby,website,favo_fansite,favo_kamer,grootprofiel)
+							VALUES ('".$row_member_id."','','','','','','','','')");
 			/// de gegevens worden gemaild ///
-			$headers = "Content-type: text/html";
+			$headers = 'From: '.EMAIL.'' . "\r\n" . 'Content-type: text/html';
 			mail($email,SITENAAM,"Beste ".$gebruikersnaam.",<br /><br />Je hebt net op ".SITENAAM." een account gemaakt.<br>
 			Hierbij mailen wij je de gegevens.<br />
 			Gebruikersnaam : <strong>".$gebruikersnaam."</strong><br>
@@ -69,10 +63,11 @@ class profielen {
 	
 	
 	
-	function inloggen($gebruikersnaam,$wachtwoord) {
+	function inloggen($gebruikersnaam,$wachtwoord,$remember) {
 		// rare tekens verwijderen
 		$gebruikersnaam = mysql_real_escape_string(substr($gebruikersnaam,0,25));
 		$wachtwoord = mysql_real_escape_string(substr($wachtwoord,0,255));
+		$$remember = mysql_real_escape_string(substr($remember,0,255));
 		$sql = mysql_query("SELECT member_id,gebruikersnaam,level,rang FROM leden WHERE gebruikersnaam='".$gebruikersnaam."' AND wachtwoord='".md5($wachtwoord)."'");
 		if(mysql_num_rows($sql) < 1) {
 			return "De gegevens die je hebt ingevult is fout.<br>
@@ -87,6 +82,9 @@ class profielen {
 				}
 				if($row['level'] == 2) {
 					$_SESSION['nieuwsreporter'] = 1;
+				}
+				if($row['level'] == 5) {
+					$_SESSION['moderator'] = 1;
 				}
 				if($row['level'] == 3) {
 					$_SESSION['forumbeheerder'] = 1;
@@ -168,6 +166,9 @@ class profielen {
 				$md5hash = md5($sessdata_str);
 				$_SESSION['hash'] = $md5hash;
 				// HASH //
+				if($remember == "ja") {
+					$_COOKIE['hash'] = $md5hash;  // 1 jaar lang ingelogd!
+				}
 				mysql_query("INSERT INTO sessies (member_id,hash,ip,date) VALUES ('".$row['member_id']."','".$md5hash."','".$_SERVER['REMOTE_ADDR']."',NOW())");
 				if(mysql_error() != "") {
 					echo "Er is een fout in de sessies database, check je database";
@@ -184,10 +185,10 @@ class profielen {
 	function wachtwoordAanpassen($wachtwoordoud,$wachtwoordnieuw)  {
 		$wachtwoordoud = mysql_real_escape_string(substr($wachtwoordoud,0,255));
 		$wachtwoordnieuw = mysql_real_escape_string(substr($wachtwoordnieuw,0,255));
-		$sql = mysql_query("SELECT wachtwoord,email,geboortedatum FROM leden WHERE member_id='".$_SESSION['id']."'");
+		$sql = mysql_query("SELECT * FROM leden WHERE member_id='".$_SESSION['id']."'");
 		$row = mysql_fetch_assoc($sql);
-		if($row['wachtwoord'] == md5($wachtwoordoud) || $row['email'] == $_POST['email'] || $row['geboortedatum'] == $_POST['geboortedatum']) {
-			mysql_query("UPDATE leden SET wachtwoord='".md5($wachtwoordnieuw)."' WHERE member_id='".$_SESSION['id']."' AND email='".$_POST['email']."' AND geboortedatum='".$_POST['geboortedatum']."'");
+		if($row['wachtwoord'] == md5($wachtwoordoud) && ($row['email'] == $_POST['email']) && ($row['opvraagwoord'] == $_POST['opvraagwoord'])) {
+			mysql_query("UPDATE leden SET wachtwoord='".md5($wachtwoordnieuw)."' WHERE member_id='".$_SESSION['id']."' AND email='".$_POST['email']."' AND opvraagwoord='".$_POST['opvraagwoord']."'");
 			if(mysql_error() == "") {
 				return "Je wachtwoord is succesvol geupdate.<br />Je kunt nu verder gaan.<br /><a href='javascript:history.go(-1)'>Ga terug</a>";
 			}else{
@@ -458,33 +459,14 @@ else {
 }
 // Einde van online bezoekers //
 
-?>
-<script type="text/javascript" language="javascript">
-function faq(div)
-{
-        var thisLevel = document.getElementById(div);
-
-        if (thisLevel.style.display == "none")
-        {
-                thisLevel.style.display = "block";
-        }
-        else
-        {
-                var thisLevel = document.getElementById(div);
-                thisLevel.style.display = "none";
-        }
+$sql1 = mysql_query("SELECT member_id,gebruikersnaam,level,rang FROM leden WHERE gebruikersnaam='".$gebruikersnaam."' AND wachtwoord='".md5($wachtwoord)."'");
+$row1 = mysql_fetch_assoc($sql1);
+if($row1['rang'] == "verbannen") {
+	$sql = mysql_query("SELECT infractie FROM leden WHERE member_id='".$_SESSION['id']."'");
+	$row = mysql_fetch_assoc($sql);
+	if($row['infractie'] > 9) {
+		mysql_query("UPDATE leden SET rang='verbannen' WHERE member_id='".$_SESSION['id']."'");
+		echo '<meta http-equiv="refresh" content="0;URL=?p=uitloggen" />';
+	}
 }
-</script>
-
-<?php
-		$sql1 = mysql_query("SELECT member_id,gebruikersnaam,level,rang FROM leden WHERE gebruikersnaam='".$gebruikersnaam."' AND wachtwoord='".md5($wachtwoord)."'");
-		$row1 = mysql_fetch_assoc($sql1);
-		if($row1['rang'] == "verbannen") {
-			$sql = mysql_query("SELECT infractie FROM leden WHERE member_id='".$_SESSION['id']."'");
-			$row = mysql_fetch_assoc($sql);
-			if($row['infractie'] > 9) {
-				mysql_query("UPDATE leden SET rang='verbannen' WHERE member_id='".$_SESSION['id']."'");
-				echo '<meta http-equiv="refresh" content="0;URL=?p=uitloggen" />';
-			}
-		}
-			?>
+?>

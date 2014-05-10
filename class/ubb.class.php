@@ -66,6 +66,11 @@ function ubb($bericht) {
  $bericht = preg_replace("#\[s\](.+?)\[/s\]#is","<s>\\1</s>",$bericht);
  // Quote
  $bericht = preg_replace("#\[quote\](.+?)\[/quote\]#is","<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\"><tr><td width=\"3%\">&nbsp;</td><td><small>Quote</small></td></tr><tr><td width=\"3%\">&nbsp;</td><td style=\"border: 1px solid #232850;\"><table><tr><td>\\1</td></tr></table></td></tr></table>",$bericht);
+ 
+
+ // MOD
+ $bericht = preg_replace("#\[mod\](.+?)\[/mod\]#is","<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\"><tr><td width=\"3%\">&nbsp;</td><td><small>Quote</small></td></tr><tr><td width=\"3%\">&nbsp;</td><td style=\"border: 1px solid #232850;\"><table><tr><td>\\1</td></tr></table></td></tr></table>",$bericht);
+
  $bericht = preg_replace("#\[quote=(.+?)\](.+?)\[/quote\]#is","<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\"><tr><td width=\"3%\">&nbsp;</td><td><small>Quote: <b>\\1</b></small></td></tr><tr><td width=\"3%\">&nbsp;</td><td style=\"border: 1px solid #232850;\"><table><tr><td>\\2</td></tr></table></td></tr></table>",$bericht);
  // Plaatjes
  $bericht = preg_replace("#\[img\](http)(.+?)\[/img\]#is","<img src=\"\\1\\2\" alt=\"Plaatje\" />",$bericht);

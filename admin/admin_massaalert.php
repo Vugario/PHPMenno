@@ -3,18 +3,13 @@
 if(isset($_SESSION['admin'])) {
 	if(isset($_POST['submit']) && !empty($_POST['bericht'])) {
 		$bericht = mysql_real_escape_string($_POST['bericht']);
-
-		$sql = "SELECT member_id,gebruikersnaam,level FROM leden ORDER BY gebruikersnaam ASC";
-		$query = mysql_query($sql);
-		
-		while($row = mysql_fetch_assoc($query)) {
-			mysql_query("INSERT INTO alert (member_id,reden,gelezen,datum,door) VALUES ('".$row['member_id']."','".$bericht."','Nee',NOW(),'".$_SESSION['gebruikersnaam']."')");
-			$i++;
-		}
+		$dag = date("Y-m-d");
+mysql_query( "INSERT INTO alert (member_id,reden,gelezen,datum,door) (SELECT member_id, '{$bericht}' as reden, 'Nee' as gelezen, NOW() as datum, '{$_SESSION['gebruikersnaam']}' as door FROM leden)" );
 		if(mysql_error() == "") {
 			echo "Alerts zijn succesvol verstuurd.";
 		}else{
 			echo "Er is een onbekende fout opgetreden.";
+			echo mysql_error();
 		}
 	}else{
 		?>

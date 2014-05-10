@@ -2,6 +2,55 @@
 if($instellingen['berichten'] == "uit") {
 	echo "Berichten versturen staat uit.<br /><a href='javascript:history.go(-1)'>Ga terug</a>";
 }else{
+
+
+class pb {
+	function berichtVersturen($aan,$titel,$bericht) {
+		$aan = mysql_real_escape_string(substr($aan,0,255));
+		$titel = mysql_real_escape_string(substr($titel,0,255));
+		$bericht = mysql_real_escape_string(nl2br(substr($bericht,0,255)));	
+		mysql_query("INSERT INTO berichten (aan,door,titel,bericht,gelezen,datum) VALUES
+					('".$aan."','".$_SESSION['id']."','".$titel."','".$bericht."','nee',NOW())");
+		mysql_query("INSERT INTO berichten_verzonden (aan,door,titel,bericht,gelezen,datum) VALUES
+					('".$aan."','".$_SESSION['id']."','".$titel."','".$bericht."','nee',NOW())");
+		if(mysql_error() == "") {
+			return "Je bericht is succesvol verstuurd.<br />Wil je nog een bericht versturen?<br /><a href='javascript:history.go(-2)'>Ga terug</a>";
+		}else{
+			echo mysql_error();
+		}
+	}
+	function berichtVerwijderen($bericht_id) {
+		mysql_query("DELETE FROM berichten WHERE bericht_id='".$bericht_id."' AND aan='".$_SESSION['id']."'");
+		if(mysql_error() == "") {
+			return "Het bericht is succesvol verwijderd.<br />";
+		}else{
+			mysql_error();
+		}
+	}
+	function berichtOpslaan ($bericht_id) {
+		$sql = mysql_query("SELECT * FROM berichten WHERE bericht_id='".$bericht_id."' AND aan='".$_SESSION['id']."'");
+		$row = mysql_fetch_assoc($sql);
+		mysql_query("INSERT INTO berichten_opgeslagen (bericht_id,aan,door,titel,bericht,gelezen,datum) VALUES 
+					('".$bericht_id."','".$row['aan']."','".$row['door']."','".$row['titel']."','".$row['bericht']."','".$row['gelezen']."','".$row['datum']."')");
+		if(mysql_error() == "") {
+			return "Je hebt dit bericht succesvol opgeslagen.<br>Wil je nog een bericht opslaan?<br><a href='javascript:history.go(-1)'>Ga terug</a>";
+		}else{
+			mysql_error();
+		}
+	}
+	function berichtOpslaanVerwijderen ($opgeslagen_id) {
+		$opgeslagen_id = mysql_real_escape_string(substr($opgeslagen_id,0,255));
+		mysql_query("DELETE FROM opgeslagen_berichten WHERE opgeslagen_id='".$opgeslagen_id."'");
+		if(mysql_error() == "") {
+			return "Je hebt succesvol dit bericht verwijderd uit je opgeslagen berichten.<br>Wil je nog iets verwijderen?<br><a href='javascript:history.go(-1)'>Ga terug</a>";
+		}else{
+			mysql_error();
+		}
+	}
+}
+$pb = new pb();
+
+
 	echo "<center>
 	<a href='?p=bericht&a=bekijken'>Inbox</a> | 
 	<a href='?p=bericht&a=versturen'>Bericht Versturen</a> | 
@@ -45,9 +94,12 @@ if($instellingen['berichten'] == "uit") {
 				</form>
 				<?php
 			}
-		}elseif($_GET['a'] == "verwijderen") {
-			if(isset($_POST['bericht_id']) && isset($_POST['verwijderen'])) {
-				echo $pb->berichtVerwijderen($_POST['bericht_id']);
+		}elseif($_POST['verwijderen']) {
+			if(isset($_POST['list']) && isset($_POST['verwijderen'])) {
+				$aantal = count($_POST['list']);
+				for($i = 0; $i < $aantal; $i++) {
+					echo $pb->berichtVerwijderen($_POST['list'][$i]);
+				}
 			}else{
 				?>
 					<table>
@@ -171,11 +223,13 @@ if($instellingen['berichten'] == "uit") {
 				if(mysql_num_rows($sql) == 0) {
 					echo "Je hebt geen berichten.<br><a href='javascript:history.go(-1)'>Ga terug</a>";
 				}else{
-					echo "<table width='300'>
+					echo "<form name='myform' action='' method='post'>
+						<table width='300'>
 							<tr>
 								<td><strong>Door</strong></td>
 								<td><strong>Titel</strong></td>
 								<td><strong>Bekijken</strong></td>
+								<td><strong>Verwijderen</strong></td>
 							</tr>";
 					while($row = mysql_fetch_assoc($sql)) {	
 						$sql_door = mysql_query("SELECT gebruikersnaam FROM leden WHERE member_id='".$row['door']."'");
@@ -185,9 +239,12 @@ if($instellingen['berichten'] == "uit") {
 								<td>".htmlspecialchars($row_door['gebruikersnaam'])."</td>
 								<td>".htmlspecialchars($row['titel'])."</td>
 								<td><a href='?p=bericht&bid=".$row['bericht_id']."'>Bekijken</a></td>
+								<td><input type='checkbox' name=\"list[]\" value='".$row['bericht_id']."'></td>
 							</tr>";
 					}
-					echo "</table><br /><a href='?p=bericht&a=verwijderen'>Verwijder berichten</a>";
+					echo "</table><br />
+					<input type='submit' name='verwijderen' value='Verwijder' />&nbsp;
+					</form>";
 				}
 			}
 		}else{ // hier kan je een nieuwe }elseif($_GET['a'] == "LALALA") {

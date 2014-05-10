@@ -1,6 +1,6 @@
 <?php
 
-if(isset($_SESSION['admin']) || isset($_SESSION['nieuwsreporter']) || isset($_SESSION['forumbeheerder'])) {
+if(isset($_SESSION['admin']) || isset($_SESSION['nieuwsreporter']) || isset($_SESSION['forumbeheerder']) || isset($_SESSION['moderator'])) {
 	if(isset($_POST['sturen'])) {
 		if($_POST['iedereen'] == "ja") {
 			$sql = mysql_query("SELECT member_id FROM leden");

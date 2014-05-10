@@ -1,5 +1,5 @@
 <?php
-if(isset($_SESSION['admin'])) {
+if(isset($_SESSION['admin']) || isset($_SESSION['moderator'])) {
 	if(isset($_GET['a'])) {
 		if($_GET['a'] == "wijzigen") {
 			if(isset($_POST['wijzigen']) && !empty($_POST['bid']) && !empty($_POST['bericht'])) {

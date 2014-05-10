@@ -14,7 +14,8 @@ if(isset($_SESSION['admin'])) {
 				$meubi = mysql_real_escape_string(substr($_POST['meubi'],0,255));
 				$habbo_gegevens = mysql_real_escape_string(substr($_POST['habbo_gegevens'],0,255));
 				$avatar_habbo = mysql_real_escape_string(substr($_POST['avatar_habbo'],0,255));
-				mysql_query("UPDATE instellingen SET meubi='".$meubi."',habbo_gegevens='".$habbo_gegevens."',avatar_habbo='".$avatar_habbo."',shop='".$shop."',status='".$status."',berichten='".$berichten."',stemmen='".$stemmen."',poll='".$poll."',gastenboek='".$gastenboek."' WHERE instellingen_id='1'");
+				$habbo = mysql_real_escape_string(substr($_POST['habbo'],0,255));
+				mysql_query("UPDATE instellingen SET meubi='".$meubi."',habbo='".$habbo."',habbo_gegevens='".$habbo_gegevens."',avatar_habbo='".$avatar_habbo."',shop='".$shop."',status='".$status."',berichten='".$berichten."',stemmen='".$stemmen."',poll='".$poll."',gastenboek='".$gastenboek."' WHERE instellingen_id='1'");
 				if(mysql_error() == "") {
 					echo "De instellingen zijn succesvol doorgevoerd.<br /><a href='javascript:history.go(-1)'>Ga terug</a>";
 				}else{
@@ -79,6 +80,12 @@ if(isset($_SESSION['admin'])) {
 							<td><input type="radio" name="habbo_gegevens" value="aan"
 							<?php if($row['habbo_gegevens'] == "aan") { echo 'checked="checked"'; } ?> />Aan <input type="radio" name="habbo_gegevens" value="uit"
 							<?php if($row['habbo_gegevens'] == "uit") { echo 'checked="checked"'; } ?>  />Uit</td>
+						</tr> 
+						<tr>
+							<td>Habbo Thema?</td>
+							<td><input type="radio" name="habbo" value="aan"
+							<?php if($row['habbo'] == "aan") { echo 'checked="checked"'; } ?> />Aan <input type="radio" name="habbo" value="uit"
+							<?php if($row['habbo'] == "uit") { echo 'checked="checked"'; } ?>  />Uit</td>
 						</tr> 
 						<tr>
 							<th colspan="2"><input type="submit" name="aanpassen" value="Aanpassen" /></th>

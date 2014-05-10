@@ -8,21 +8,23 @@ function checkRaretekens($string) {
 	}
 }
 
-if(isset($_POST['registreren']) && !empty($_POST['gebruikersnaam']) && !empty($_POST['wachtwoord']) && !empty($_POST['wachtwoordh']) && !empty($_POST['email']) && !empty($_POST['dag']) && !empty($_POST['maand']) && !empty($_POST['jaar']) && $_POST['wachtwoord'] == $_POST['wachtwoordh'] && !strpos($_POST['gebruikersnaam']," ") && !strpos($_POST['gebruikersnaam'],"'") && !strpos($_POST['gebruikersnaam'],"/")  && !strpos($_POST['gebruikersnaam'],"´") && strlen($_POST['gebruikersnaam']) >= 4 && $_POST['gebruikersnaam'] != "systeem" && $_POST['gebruikersnaam'] != "<noscript>" && $_POST['gebruikersnaam'] != "<noscript />" && $_POST['gebruikersnaam'] != "<noscript >" && strpos($_POST['gebruikersnaam'],"<") == false) {
+if(isset($_POST['registreren']) && !empty($_POST['gebruikersnaam']) && !empty($_POST['wachtwoord']) && !empty($_POST['wachtwoordh']) && !empty($_POST['opvraagwoord']) && !empty($_POST['email']) && $_POST['wachtwoord'] == $_POST['wachtwoordh'] && !strpos($_POST['gebruikersnaam']," ") && !strpos($_POST['gebruikersnaam'],"'") && !strpos($_POST['gebruikersnaam'],"/")  && !strpos($_POST['gebruikersnaam'],"´") && strlen($_POST['gebruikersnaam']) >= 4 && $_POST['gebruikersnaam'] != "systeem" && $_POST['gebruikersnaam'] != "<noscript>" && $_POST['gebruikersnaam'] != "<noscript />" && $_POST['gebruikersnaam'] != "<noscript >" && strpos($_POST['gebruikersnaam'],"<") == false && !ereg("noscript",$_POST['gebruikersnaam'])) {
 
-	echo $doe->registeren($_POST['gebruikersnaam'],$_POST['wachtwoord'],$_POST['dag'],$_POST['maand'],$_POST['jaar'],$_POST['email']);
+	echo $doe->registeren($_POST['gebruikersnaam'],$_POST['wachtwoord'],$_POST['opvraagwoord'],$_POST['email']);
 	
 }else{
 	?>
 	<script language="javascript" src="js/registratie.js" type="text/javascript"></script>
 	<form name="form1" action="<?php echo $_SERVER['PHP_SELF']; ?>?p=registreren" onsubmit="return ValidateForm()" method="post">
 		<table>
+			<?php if($instellingen['habbo'] == "ja") { ?>
 			<tr>
 				<td colspan="3">Je gebruikersnaam is tevens ook je habbonaam</td>
 			</tr>
 			<tr>
 				<td rowspan="7"><img src="http://images.habbohotel.nl/c_images/album1188/habbo_hug_001.png" /></td>
 			</tr>
+			<?php } ?>
 			<tr>
 				<td>Gebruikersnaam</td>
 				<td width="80%"><input type="text" name="gebruikersnaam" 
@@ -30,25 +32,22 @@ if(isset($_POST['registreren']) && !empty($_POST['gebruikersnaam']) && !empty($_
 					
 					<?php 
 						if(isset($_POST['registreren']) && empty($_POST['gebruikersnaam'])) {
-							echo "Je hebt je gebruikersnaam leeggelaten.";
-						}
-						if(isset($_POST['registreren']) && !empty($_POST['gebruikersnaam'])) {
-							echo "Foute gebruikersnaam";
+							echo "Je hebt je gebruikersnaam leeggelaten.&nbsp;";
 						}
 						if(isset($_POST['registreren']) && strpos($_POST['gebruikersnaam']," ")) {
-							echo "Spaties zijn niet toegestaan.";
+							echo "Spaties zijn niet toegestaan.&nbsp;";
 						}
 						if(isset($_POST['registreren']) && strpos($_POST['gebruikersnaam'],"/")) {
-							echo "Er bevinden zich rare tekens in de naam.";
+							echo "Er bevinden zich rare tekens in de naam.&nbsp;";
 						}
 						if(isset($_POST['registreren']) && strpos($_POST['gebruikersnaam'],"´")) {
-							echo "Er bevinden zich rare tekens in de naam.";
+							echo "Er bevinden zich rare tekens in de naam.&nbsp;";
 						}
 						if(isset($_POST['registreren']) && strpos($_POST['gebruikersnaam'],"'")) {
-							echo "Er bevinden zich rare tekens in de naam.";
+							echo "Er bevinden zich rare tekens in de naam.&nbsp;";
 						}
 						if(isset($_POST['registreren']) && strlen($_POST['gebruikersnaam']) < 4) {
-							echo "Je gebruikersnaam moet uit 4 of meer tekens bestaan.";
+							echo "Je gebruikersnaam moet uit 4 of meer tekens bestaan.&nbsp;";
 						}
 							
 					?>
@@ -83,32 +82,14 @@ if(isset($_POST['registreren']) && !empty($_POST['gebruikersnaam']) && !empty($_
 					</td>
 			</tr>
 			<tr>
-				<td>Geboortedatum</td>
-				<td>
-					<select name="dag">
-						<?php
-						$dag = range(1,31);
-						foreach($dag as $var) {
-							echo "<option value='".$var."'>".$var."</option>";
-						}
-						?>
-					</select>
-					<select name="maand">
-						<?php
-						$maand = range(1,12);
-						foreach($maand as $var) {
-							echo "<option value='".$var."'>".$var."</option>";
-						}
-						?>
-					</select>
-					<select name="jaar">
-						<?php
-						$jaar = range(date("Y") - 4,1930);
-						foreach($jaar as $var) {
-							echo "<option value='".$var."'>".$var."</option>";
-						}
-						?>
-					</select>
+				<td>Opvraagwoord</td>
+				<td><input type="text" name="opvraagwoord"  
+					<?php if(isset($_POST['registreren'])) { echo "value='".$_POST['opvraagwoord']."'"; } ?>  />
+					<?php
+					if(isset($_POST['registreren']) && empty($_POST['opvraagwoord'])) {
+						echo "Je hebt je opvraagwoord leeggelaten.&nbsp;";
+					}
+					?>
 				</td>
 			</tr>
 			<tr>
